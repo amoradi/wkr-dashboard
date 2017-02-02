@@ -1,0 +1,23 @@
+.u {
+  &-container {
+    min-width: 960px;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  &-section {
+    background-color: $white;
+    border: 1px solid darken($gray, 30%);
+    padding: 20px;
+    margin: 24px 0;
+  }
+
+  &-label {
+    text-transform: uppercase;
+    font-size: $base_font_size;
+  }
+
+  &-small-label {
+    font-size: 12px;
+  }
+}

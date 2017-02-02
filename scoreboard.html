@@ -1,0 +1,77 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Weekly Reports</title>
+  <meta name="description" content="">
+
+  <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+
+  <!-- <link rel="stylesheet" type="text/css" href="scoreboard.css"> -->
+</head>
+
+<body>
+  <header class="OverallScoreBoard">
+    <h1 class="OverallScoreBoard--heading">Overall Health Score</h1>
+    <div class="OverallScoreBoard--container">
+      <div class="OverallScoreBoard--aggregate">
+        <div class="OverallScoreBoard--aggregateScore"></div>
+        <div class="OverallScoreBoard--aggregateCompleted">
+          <span class="u-small-label-reverse">completed</span>
+        </div>
+      </div>
+      <div class="OverallScoreBoard--measureable">
+        <span class="u-label">Morale</span>
+      </div>
+      <div class="OverallScoreBoard--measureable">
+        <span class="u-label">Stress</span>
+      </div>
+      <div class="OverallScoreBoard--measureable">
+        <span class="u-label">Workload</span>
+      </div>
+      <div class="OverallScoreBoard--measureable">
+        <span class="u-label">Clarity</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="TeamMemberScores">
+    <div class="TeamMemberScores--col">
+      <h2 class="TeamMemberScores--heading">Team Members</h2>
+    </div>
+    <div class="TeamMemberScores--colMain">
+      <section class="TeamMemberScores--scores">
+        <header class="TeamMemberScores--row">
+          <span class="TeamMemberScores--cell u-label">Morale</span>
+          <span class="TeamMemberScores--cell u-label">Stress</span>
+          <span class="TeamMemberScores--cell u-label">Workload</span>
+          <span class="TeamMemberScores--cell u-label">Clarity</span>
+        </header>
+        <!-- <div class="TeamMemberScores--row">
+          <span class="TeamMemberScores--cellPerson"></span>
+          <span class="TeamMemberScores--cell"></span>
+          <span class="TeamMemberScores--cell"></span>
+          <span class="TeamMemberScores--cell"></span>
+          <span class="TeamMemberScores--cell"></span>
+        </div> -->
+      </section>
+      <section class="TeamMemberScores--noScores">
+        <h2 class="TeamMemberScores--heading">Didn't Fill Out Survey</h2>
+        <div class="TeamMemberScores--row">
+          <span class="TeamMemberScores--cellPerson"></span>
+          <span class="TeamMemberScores--cellPerson"></span>
+          <span class="TeamMemberScores--cellPerson"></span>
+          <span class="TeamMemberScores--cellPerson"></span>
+        </div>
+      </section>
+    </div>
+  </section>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <script src="scripts/scoreboard.js"></script>
+</body>
+</html>
