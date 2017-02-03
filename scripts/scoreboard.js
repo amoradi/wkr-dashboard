@@ -9,6 +9,7 @@ var dashboardOpts = {
     ["stressinverse", "stresslevel"]
   ],
   mainClassName: "TeamMemberScores-colMain",
+  avgScoreClassName: "Aggregate-aggregateScore",
   scoresContainerClassName: "TeamMemberScores-scores",
   headingClassName: "TeamMemberScores-heading",
   rowClass: "TeamMemberScores-row",
@@ -58,6 +59,16 @@ Number.isInteger = Number.isInteger || function(value) {
 
 function initDashboard(options) {
   window.ReportIncompleteCount = 0;
+  window.ReportAvgScore = [];
+  window.ReportAverages = {
+    "avgScore": [],
+    "avgSatisfaction": [],
+    "avgWorkload": [],
+    "avgProductivity": [],
+    "avgClarity": [],
+    "avgStress": []
+  }
+
   fetchWeeklyReportsData(options["spreadsheetData"]);
 }
 
@@ -101,7 +112,17 @@ function parseTeamMemberScores(weeklyReportsData) {
   if (ReportIncompleteCount) {
     appendNode(NoScores, NoScoresMembers);
     appendNode(document.querySelector("." + dashboardOpts["mainClassName"]), NoScores);
-  }  
+  }
+
+  drawAvgScore(); 
+}
+
+function add(a, b) {
+  return a + b;
+}
+
+function drawAvgScore() {
+  document.querySelector("." + dashboardOpts["avgScoreClassName"]).innerHTML = Math.round(ReportAvgScore.reduce(add, 0)/ReportAvgScore.length); 
 }
 
 function createNoScoresSection() {
@@ -249,9 +270,35 @@ function drawTeamMemberScores(docFrag, scoresContainerClassName) {
   var row = document.createElement("div");
 
   setMemberAvgScore(docFrag);
+  affixNumberToCell(docFrag);
   row.className = dashboardOpts["rowClass"]; 
   row.appendChild(docFrag);
   document.querySelector("." + scoresContainerClassName).appendChild(row);
+}
+
+function affixNumberToCell(docFrag) {
+  var cells = docFrag.querySelectorAll("." + dashboardOpts["chartOpts"]["cellClassName"]);
+
+  for (i = 0, ii = cells.length; i < ii; i++) {
+    if (i > 0) {
+      cells[i].setAttribute("data-cell", i);
+
+      var value = cells[i].firstChild.getAttribute("data-score");
+      pushToReportAverages(i, value);
+    }
+  }
+}
+
+function pushToReportAverages(cellNum, value) {
+  var map = {
+    "1": "avgSatisfaction",
+    "2": "avgWorkload",
+    "3": "avgProductivity",
+    "4": "avgClarity",
+    "5": "avgStress"
+  }
+
+  window.ReportAverages[map[cellNum]].push(value);
 }
 
 function setMemberAvgScore(docFrag) {
@@ -260,6 +307,7 @@ function setMemberAvgScore(docFrag) {
   avgScoreElem = document.createElement("span"),
   color = calculateColor([0, avgScore])[1];
 
+  ReportAvgScore.push(avgScore);
   avgScoreElem.style.color = color;
   avgScoreElem.innerHTML = "<br />" + avgScore;
   docFrag.querySelector(headShotElem).style.borderColor = color;
