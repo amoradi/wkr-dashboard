@@ -46,9 +46,18 @@ h5 {
     flex-wrap: wrap;
     justify-content: flex-start; }
 .TeamMemberScores-cell {
-  flex-basis: 16.667%;
+  flex-basis: 15%;
   text-align: center;
   margin: 20px 0; }
+  .TeamMemberScores-cell[data-incomplete-report] {
+    flex-basis: 16.6667%; }
+  .TeamMemberScores-cell:not([data-incomplete-report]):first-child {
+    width: 25%;
+    flex-basis: 25%; }
+  .TeamMemberScores-cell:not(.u-label):not([data-incomplete-report]):first-child {
+    text-align: left;
+    padding-left: 3%;
+    box-sizing: border-box; }
 .TeamMemberScores-chart {
   margin: 0 auto; }
 .TeamMemberScores-headShot {

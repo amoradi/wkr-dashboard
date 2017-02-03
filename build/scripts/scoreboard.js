@@ -18,8 +18,8 @@ var dashboardOpts = {
   noScoresClassName: "TeamMemberScores-noScores",
   noScoresHeadingText: "Didn't Fill Out Survey",
   chartOpts: {
-    height: "75px",
-    width: "75px",
+    height: "60px",
+    width: "60px",
     cellClassName: "TeamMemberScores-cell",
     chartClassName: "TeamMemberScores-chart",
     colors: {
@@ -134,6 +134,7 @@ function drawTeamMember(nameString, headShotUrl, isReportIncomplete) {
   headShot.style.backgroundImage = "url(" + headShotUrl + ")";
 
   if (isReportIncomplete) {
+    nameNode.setAttribute("data-incomplete-report", "true");
     headShot.style.borderColor = dashboardOpts["chartOpts"]["colors"]["activeColors"][0]["value"];
   }
 
@@ -261,13 +262,8 @@ function setMemberAvgScore(docFrag) {
 
   avgScoreElem.style.color = color;
   avgScoreElem.innerHTML = "<br />" + avgScore;
-
   docFrag.querySelector(headShotElem).style.borderColor = color;
-
   docFrag.querySelector(headShotElem + " + span").appendChild(avgScoreElem);
-
-
-    //calculateColor([0, calcTeamMemberAvgScore(docFrag)]);
 }
 
 function calcTeamMemberAvgScore(docFrag) {
