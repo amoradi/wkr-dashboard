@@ -1,8 +1,11 @@
 .TeamMemberScores {
   
-  &-scores, 
-  &-noScores {
+  &-scores {
     padding: $container_padding;
+  }
+
+  &-noScores {
+    padding: $container_padding $container_extra_padding;
   }
 
   &-noScores {

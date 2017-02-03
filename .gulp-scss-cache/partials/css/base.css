@@ -29,10 +29,12 @@ h5 {
   font-size: 12px; }
 
 .Aggregate {
-  padding: 20px; }
+  padding: 20px 40px; }
 
-.TeamMemberScores-scores, .TeamMemberScores-noScores {
+.TeamMemberScores-scores {
   padding: 20px; }
+.TeamMemberScores-noScores {
+  padding: 20px 40px; }
 .TeamMemberScores-noScores {
   border-top: 1px solid #aaaaa2; }
 .TeamMemberScores-row {
