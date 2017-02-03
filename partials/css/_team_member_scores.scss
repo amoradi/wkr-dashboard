@@ -13,38 +13,44 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     align-content: center;
 
     &Wrap {
       flex-wrap: wrap;
+      justify-content: flex-start;
     }
   }
 
   &-cell {
     flex-basis: 16.667%;
     text-align: center;
+    margin: 20px 0;
   }
 
   &-chart {
-    margin: 20px auto;
+    margin: 0 auto;
   }
 
   &-headShot {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     display: block;
     background-size: cover;
     margin: 10px auto;
     border-radius: 50%;
     display: table-cell;
     vertical-align: middle;
+    border-width: 4px;
+    border-style: solid;
+    box-sizing: border-box;
   }
 
   &-name {
     display: table-cell;
     vertical-align: middle;
     padding-left: 10px;
+    text-align: left;
   }
 }

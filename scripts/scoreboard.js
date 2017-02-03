@@ -83,7 +83,7 @@ function parseTeamMemberScores(weeklyReportsData) {
       ReportIncompleteCount++;
 
       if (ReportIncompleteCount == 1) {
-        window.NoScoresSection = createNoScoresSection();
+        window.NoScoresMembers = createNoScoresSection();
       }
 
       drawTeamMember(name, headShot, true);
@@ -99,25 +99,22 @@ function parseTeamMemberScores(weeklyReportsData) {
   });
 
   if (ReportIncompleteCount) {
-    appendNode(NoScoresDocFrag, NoScoresSection);
-    appendNode(document.getElementsByClassName(dashboardOpts["mainClassName"])[0], NoScoresDocFrag);
+    appendNode(NoScores, NoScoresMembers);
+    appendNode(document.querySelector("." + dashboardOpts["mainClassName"]), NoScores);
   }  
 }
 
 function createNoScoresSection() {
-  window.NoScoresDocFrag = document.createDocumentFragment();
-  var section = document.createElement("section"),
+  window.NoScores = document.createElement("section");
   h2 = document.createElement("h2"),
   row = document.createElement("div");
 
-  section.className = dashboardOpts["noScoresClassName"];
+  NoScores.className = dashboardOpts["noScoresClassName"];
   h2.className = dashboardOpts["headingClassName"];
   h2.innerHTML = dashboardOpts["noScoresHeadingText"]
-  section.appendChild(h2);
+  NoScores.appendChild(h2);
   row.className = dashboardOpts["rowClass"] + " " + dashboardOpts["rowClassWrap"];
-  section.appendChild(row);
-  appendNode(NoScoresDocFrag, section);
-
+  
   return row;
 }
 
@@ -127,7 +124,7 @@ function isReportIncomplete(content) {
   return re.test(content);
 }
 
-function drawTeamMember(nameString, headShotUrl, isReportIncomplete, hasMissingScores) {
+function drawTeamMember(nameString, headShotUrl, isReportIncomplete) {
   var nameNode = document.createElement("div"),
   headShot = document.createElement("span"),
   name = document.createElement("span");
@@ -135,12 +132,17 @@ function drawTeamMember(nameString, headShotUrl, isReportIncomplete, hasMissingS
   nameNode.className = dashboardOpts["chartOpts"]["cellClassName"];
   headShot.className = dashboardOpts["headShotClassName"];
   headShot.style.backgroundImage = "url(" + headShotUrl + ")";
+
+  if (isReportIncomplete) {
+    headShot.style.borderColor = dashboardOpts["chartOpts"]["colors"]["activeColors"][0]["value"];
+  }
+
   name.className = dashboardOpts["nameClassName"];
   name.innerHTML = nameString;
   nameNode.appendChild(headShot);
   nameNode.appendChild(name);
 
-  var htmlToAppendTo = (isReportIncomplete) ? window.NoScoresSection : dashboardOpts["docFrag"];
+  var htmlToAppendTo = (isReportIncomplete) ? window.NoScoresMembers : dashboardOpts["docFrag"];
 
   appendNode(
     htmlToAppendTo,
@@ -229,6 +231,7 @@ function doughnutChartFactory(chartData, colors) {
     }
   });
 
+  chart.setAttribute("data-score", chartData[1]);
   chart.style.width = dashboardOpts["chartOpts"]["height"];
   chart.style.height = dashboardOpts["chartOpts"]["width"];
   chart.className = dashboardOpts["chartOpts"]["chartClassName"]
@@ -237,17 +240,44 @@ function doughnutChartFactory(chartData, colors) {
   return chartCell;
 }
 
-function drawDidNotFillOut() {
-
-}
-
 function appendNode(docFrag, chartElem) {
   docFrag.appendChild(chartElem);
 }
 
 function drawTeamMemberScores(docFrag, scoresContainerClassName) {
   var row = document.createElement("div");
-  row.className = dashboardOpts["rowClass"];
+
+  setMemberAvgScore(docFrag);
+  row.className = dashboardOpts["rowClass"]; 
   row.appendChild(docFrag);
-  document.getElementsByClassName(scoresContainerClassName)[0].appendChild(row);
+  document.querySelector("." + scoresContainerClassName).appendChild(row);
+}
+
+function setMemberAvgScore(docFrag) {
+  var avgScore = calcTeamMemberAvgScore(docFrag),
+  headShotElem = "." + dashboardOpts["headShotClassName"],
+  avgScoreElem = document.createElement("span"),
+  color = calculateColor([0, avgScore])[1];
+
+  avgScoreElem.style.color = color;
+  avgScoreElem.innerHTML = "<br />" + avgScore;
+
+  docFrag.querySelector(headShotElem).style.borderColor = color;
+
+  docFrag.querySelector(headShotElem + " + span").appendChild(avgScoreElem);
+
+
+    //calculateColor([0, calcTeamMemberAvgScore(docFrag)]);
+}
+
+function calcTeamMemberAvgScore(docFrag) {
+  var scores = docFrag.querySelectorAll("[data-score]"),
+  dimensionCount = scores.length,
+  sum = 0;
+
+  for (i = 0; i < dimensionCount; i++) {
+    sum += parseInt(scores[i].getAttribute("data-score"), 10);
+  }
+
+  return parseInt(sum/dimensionCount, 10);
 }
