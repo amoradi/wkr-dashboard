@@ -1,7 +1,6 @@
 var dashboardOpts = {
   spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
   docFrag: document.createDocumentFragment(),
-  scoresContainerClassName: "TeamMemberScores-scores",
   dashboardDimensions: [
     ["satisfactioninverse", "satisfaction"],
     ["workloadinverse", "workload"],
@@ -9,9 +8,15 @@ var dashboardOpts = {
     ["clarityinverse","clarity"],
     ["stressinverse", "stresslevel"]
   ],
+  mainClassName: "TeamMemberScores-colMain",
+  scoresContainerClassName: "TeamMemberScores-scores",
+  headingClassName: "TeamMemberScores-heading",
   rowClass: "TeamMemberScores-row",
+  rowClassWrap: "TeamMemberScores-rowWrap",
   headShotClassName: "TeamMemberScores-headShot",
   nameClassName: "u-small-label TeamMemberScores-name",
+  noScoresClassName: "TeamMemberScores-noScores",
+  noScoresHeadingText: "Didn't Fill Out Survey",
   chartOpts: {
     height: "75px",
     width: "75px",
@@ -52,6 +57,7 @@ Number.isInteger = Number.isInteger || function(value) {
 };
 
 function initDashboard(options) {
+  window.ReportIncompleteCount = 0;
   fetchWeeklyReportsData(options["spreadsheetData"]);
 }
 
@@ -69,19 +75,50 @@ function fetchWeeklyReportsData(endPoint) {
 function parseTeamMemberScores(weeklyReportsData) {
   weeklyReportsData["feed"]["entry"].forEach(function(entry) {
     var content = entry["content"]["$t"],
-    contentObj = toJson(content);
+    name = entry["title"]["$t"],
+    contentObj = toJson(content),
+    headShot = contentObj["headshot"];
 
     if (isReportIncomplete(content)) {
+      ReportIncompleteCount++;
+
+      if (ReportIncompleteCount == 1) {
+        window.NoScoresSection = createNoScoresSection();
+      }
+
+      drawTeamMember(name, headShot, true);
       return true;
     }
 
-    drawTeamMember(entry["title"]["$t"], contentObj["headshot"]);
+    drawTeamMember(name, headShot);
 
     createTeamMemberCharts(
       contentObj,
       dashboardOpts["dashboardDimensions"]
     );
   });
+
+  if (ReportIncompleteCount) {
+    appendNode(NoScoresDocFrag, NoScoresSection);
+    appendNode(document.getElementsByClassName(dashboardOpts["mainClassName"])[0], NoScoresDocFrag);
+  }  
+}
+
+function createNoScoresSection() {
+  window.NoScoresDocFrag = document.createDocumentFragment();
+  var section = document.createElement("section"),
+  h2 = document.createElement("h2"),
+  row = document.createElement("div");
+
+  section.className = dashboardOpts["noScoresClassName"];
+  h2.className = dashboardOpts["headingClassName"];
+  h2.innerHTML = dashboardOpts["noScoresHeadingText"]
+  section.appendChild(h2);
+  row.className = dashboardOpts["rowClass"] + " " + dashboardOpts["rowClassWrap"];
+  section.appendChild(row);
+  appendNode(NoScoresDocFrag, section);
+
+  return row;
 }
 
 function isReportIncomplete(content) {
@@ -90,7 +127,7 @@ function isReportIncomplete(content) {
   return re.test(content);
 }
 
-function drawTeamMember(nameString, headShotUrl) {
+function drawTeamMember(nameString, headShotUrl, isReportIncomplete, hasMissingScores) {
   var nameNode = document.createElement("div"),
   headShot = document.createElement("span"),
   name = document.createElement("span");
@@ -103,8 +140,10 @@ function drawTeamMember(nameString, headShotUrl) {
   nameNode.appendChild(headShot);
   nameNode.appendChild(name);
 
+  var htmlToAppendTo = (isReportIncomplete) ? window.NoScoresSection : dashboardOpts["docFrag"];
+
   appendNode(
-    dashboardOpts["docFrag"],
+    htmlToAppendTo,
     nameNode
   );
 }

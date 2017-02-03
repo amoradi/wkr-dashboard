@@ -22,7 +22,6 @@ h5 {
 .u-section {
   background-color: #fff;
   border: 1px solid #aaaaa2;
-  padding: 20px;
   margin: 24px 0; }
 .u-label {
   text-transform: uppercase;
@@ -30,6 +29,13 @@ h5 {
 .u-small-label {
   font-size: 12px; }
 
+.Aggregate {
+  padding: 20px; }
+
+.TeamMemberScores-scores, .TeamMemberScores-noScores {
+  padding: 20px; }
+.TeamMemberScores-noScores {
+  border-top: 1px solid #aaaaa2; }
 .TeamMemberScores-row {
   display: flex;
   flex-direction: row;
@@ -37,6 +43,8 @@ h5 {
   justify-content: space-around;
   align-items: center;
   align-content: center; }
+  .TeamMemberScores-rowWrap {
+    flex-wrap: wrap; }
 .TeamMemberScores-cell {
   flex-basis: 16.667%;
   text-align: center; }

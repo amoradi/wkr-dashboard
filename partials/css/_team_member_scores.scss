@@ -1,4 +1,14 @@
 .TeamMemberScores {
+  
+  &-scores, 
+  &-noScores {
+    padding: $container_padding;
+  }
+
+  &-noScores {
+    border-top: 1px solid darken($gray, 30%);
+  }
+
   &-row {
     display: flex;
     flex-direction: row;
@@ -6,6 +16,10 @@
     justify-content: space-around;
     align-items: center;
     align-content: center;
+
+    &Wrap {
+      flex-wrap: wrap;
+    }
   }
 
   &-cell {
