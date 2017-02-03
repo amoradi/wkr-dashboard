@@ -1,3 +1,28 @@
 .Aggregate {
-  padding: $container_padding $container_extra_padding;
+  padding: $container_padding;
+
+  &-heading {
+    padding-left: $container_padding;
+  }
+
+  &-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+  }
+
+  &-measureable {
+
+    &:first-child {
+      width: 25%;
+      flex-basis: 25%;
+    }
+
+    flex-basis: 15%;
+    text-align: center;
+    margin: 20px 0;
+  }
 }

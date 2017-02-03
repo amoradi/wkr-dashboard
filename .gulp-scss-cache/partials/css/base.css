@@ -29,7 +29,23 @@ h5 {
   font-size: 12px; }
 
 .Aggregate {
-  padding: 20px 40px; }
+  padding: 20px; }
+  .Aggregate-heading {
+    padding-left: 20px; }
+  .Aggregate-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center; }
+  .Aggregate-measureable {
+    flex-basis: 15%;
+    text-align: center;
+    margin: 20px 0; }
+    .Aggregate-measureable:first-child {
+      width: 25%;
+      flex-basis: 25%; }
 
 .TeamMemberScores-scores {
   padding: 20px; }
