@@ -6,7 +6,7 @@ class TeamMemberScores {
       .then(function (response) {
         this.data = response.data;
         this.dataFeed = this.data["feed"];
-        this.teamMemberTotal = parseInt(this.dataFeed["openSearch$totalResults"]["$t"], 10);
+        this.teamMemberCount = parseInt(this.dataFeed["openSearch$totalResults"]["$t"], 10);
         this.allTeamMembers = createTeamMembersObj(this.dataFeed["entry"]);
         [this.particpants, this.nonParticpants] = this.allTeamMembers;
       }.bind(this))
