@@ -1,0 +1,1 @@
+"use strict";(void 0).nonParticipants=[{name:"Gary Payton",image:"http"},{name:"Gary Payton",image:"http"}],(void 0).teamMembers=[{name:"Gary Payton",image:"http",dimensions:[{satisfactioninverse:88,satisfaction:12},{}]},{name:"Gary Payton",dimensions:[{satisfactioninverse:88,satisfaction:12},{}]}];

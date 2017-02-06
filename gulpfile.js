@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var pug = require('gulp-pug');
 var scss = require('gulp-scss');
+const babel = require('gulp-babel');
 var js_minify = require('gulp-minify');
 var minifyCSS = require('gulp-csso');
 
@@ -18,7 +19,8 @@ gulp.task('css', function(){
 });
 
 gulp.task('js', function(){
-  return gulp.src('scripts/scoreboard.js')
+  return gulp.src('scripts/*.js')
+    .pipe(babel({presets: ['es2015']}))
     .pipe(js_minify())
     .pipe(gulp.dest('build/scripts'))
 });

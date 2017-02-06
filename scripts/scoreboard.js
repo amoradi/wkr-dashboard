@@ -77,10 +77,11 @@ function fetchWeeklyReportsData(endPoint) {
     .then(function (response) {
       parseTeamMemberScores(response.data);
     })
-    .catch(function (error) {
-      console.log(error);
-    }
-  );
+    // .catch(function (error) {
+    //   console.log(error);
+    // }
+  //)
+  ;
 }
 
 function parseTeamMemberScores(weeklyReportsData) {
@@ -127,7 +128,7 @@ function drawAvgScore() {
 
 function createNoScoresSection() {
   window.NoScores = document.createElement("section");
-  h2 = document.createElement("h2"),
+  let h2 = document.createElement("h2"),
   row = document.createElement("div");
 
   NoScores.className = dashboardOpts["noScoresClassName"];
@@ -279,7 +280,7 @@ function drawTeamMemberScores(docFrag, scoresContainerClassName) {
 function affixNumberToCell(docFrag) {
   var cells = docFrag.querySelectorAll("." + dashboardOpts["chartOpts"]["cellClassName"]);
 
-  for (i = 0, ii = cells.length; i < ii; i++) {
+  for (var i = 0, ii = cells.length; i < ii; i++) {
     if (i > 0) {
       cells[i].setAttribute("data-cell", i);
 
@@ -319,7 +320,7 @@ function calcTeamMemberAvgScore(docFrag) {
   dimensionCount = scores.length,
   sum = 0;
 
-  for (i = 0; i < dimensionCount; i++) {
+  for (var i = 0; i < dimensionCount; i++) {
     sum += parseInt(scores[i].getAttribute("data-score"), 10);
   }
 
