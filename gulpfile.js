@@ -4,6 +4,7 @@ var scss = require('gulp-scss');
 const babel = require('gulp-babel');
 var js_minify = require('gulp-minify');
 var minifyCSS = require('gulp-csso');
+var transpile  = require('gulp-es6-module-transpiler');
 
 gulp.task('html', function(){
   return gulp.src('partials/html/index.pug')
@@ -20,9 +21,12 @@ gulp.task('css', function(){
 
 gulp.task('js', function(){
   return gulp.src('scripts/*.js')
+    .pipe(transpile({
+      formatter: 'bundle'
+    }))
     .pipe(babel({presets: ['es2015']}))
     .pipe(js_minify())
-    .pipe(gulp.dest('build/scripts'))
+    .pipe(gulp.dest('build'))
 });
 
 gulp.task('default', [ 'html', 'css', 'js' ]);
