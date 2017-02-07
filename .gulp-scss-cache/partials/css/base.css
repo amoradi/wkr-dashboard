@@ -4,7 +4,8 @@ body {
   padding: 0 5%;
   font-weight: 400;
   letter-spacing: 1px;
-  color: #444; }
+  color: #444;
+  -webkit-font-smoothing: antialiased; }
 
 h1,
 h2,
@@ -13,6 +14,10 @@ h4,
 h5 {
   font-size: 21px;
   font-weight: 400; }
+
+canvas {
+  width: 60px;
+  height: 60px; }
 
 .u-container {
   min-width: 960px;
@@ -25,27 +30,63 @@ h5 {
 .u-label {
   text-transform: uppercase;
   font-size: 14px; }
-.u-small-label {
+.u-small-label, .u-small-label-reverse {
   font-size: 12px; }
+
+.SectionBox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: center;
+  padding: 20px; }
+
+.ScoreBox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center; }
 
 .Aggregate {
   padding: 20px; }
   .Aggregate-heading {
     padding-left: 20px; }
-  .Aggregate-container {
+  .Aggregate-completedPercent {
+    display: block;
+    font-weight: bold;
+    font-size: 21px; }
+  .Aggregate-container, .Aggregate-aggregate {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-around;
     align-items: center;
     align-content: center; }
+  .Aggregate-aggregate {
+    padding: 20px;
+    width: 25%;
+    flex-basis: 25%; }
+    .Aggregate-aggregateCompleted {
+      color: #fff; }
+    .Aggregate-aggregateScore {
+      font-size: 84px;
+      color: #fff; }
   .Aggregate-measureable {
-    flex-basis: 15%;
+    flex-basis: 10%;
     text-align: center;
     margin: 20px 0; }
-    .Aggregate-measureable:first-child {
-      width: 25%;
-      flex-basis: 25%; }
+    .Aggregate-measureable .TeamMemberScores-cell {
+      position: relative; }
+      .Aggregate-measureable .TeamMemberScores-cell:before {
+        content: attr(data-avg-score);
+        display: block;
+        position: absolute;
+        width: 100%;
+        font-size: 32px;
+        line-height: 100px; }
 
 .TeamMemberScores-scores {
   padding: 20px; }
@@ -60,6 +101,8 @@ h5 {
   justify-content: space-between;
   align-items: center;
   align-content: center; }
+  .TeamMemberScores-row > div:first-child:hover {
+    cursor: pointer; }
   .TeamMemberScores-rowWrap {
     flex-wrap: wrap;
     justify-content: flex-start; }
@@ -95,5 +138,10 @@ h5 {
   vertical-align: middle;
   padding-left: 10px;
   text-align: left; }
+
+.DetailColumn {
+  flex-grow: 1; }
+  .DetailColumn + .DetailColumn {
+    flex-grow: 2; }
 
 /*# sourceMappingURL=base.css.map */

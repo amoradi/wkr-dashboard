@@ -5,7 +5,14 @@
     padding-left: $container_padding;
   }
 
-  &-container {
+  &-completedPercent {
+    display: block;
+    font-weight: bold;
+    font-size: $heading_font_size;
+  }
+
+  &-container,
+  &-aggregate {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -14,15 +21,38 @@
     align-content: center;
   }
 
-  &-measureable {
+  &-aggregate {
+    padding: $container_padding;
+    width: 25%;
+    flex-basis: 25%;
 
-    &:first-child {
-      width: 25%;
-      flex-basis: 25%;
+    &Completed {
+      color: $white;
     }
 
-    flex-basis: 15%;
+    &Score {
+      font-size: $heading_font_size * 4;
+      color: $white;
+    }
+  }
+
+  &-measureable {
+
+    flex-basis: 10%;
     text-align: center;
     margin: 20px 0;
+
+    .TeamMemberScores-cell {
+      position: relative;
+
+      &:before {
+        content: attr(data-avg-score);
+        display: block;
+        position: absolute;
+        width: 100%;
+        font-size: 32px;
+        line-height: 100px;
+      }
+    }
   }
 }

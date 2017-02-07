@@ -20,6 +20,10 @@
     align-items: center;
     align-content: center;
 
+    > div:first-child:hover {
+      cursor: pointer;
+    }
+
     &Wrap {
       flex-wrap: wrap;
       justify-content: flex-start;

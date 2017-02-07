@@ -44,6 +44,29 @@
     }
   };
 
+  function $$dashboard_event_handlers$$closest(elem, selector, limitClass) {
+    do {
+      if (elem && elem.nodeType === 1) {
+        if (elem.matches(selector)) return elem;
+        elem = elem.parentNode;
+
+        if (elem.className === limitClass) return false;
+      } else {
+        return false;
+      }
+    } while (elem);
+  }
+
+  var $$dashboard_event_handlers$$default = $$dashboard_event_handlers$$closest;
+
+  document.querySelector(".TeamMemberScores-scores").addEventListener("click", function (e) {
+    var teamMember = $$dashboard_event_handlers$$closest(e.target, ".TeamMemberScores-row > div:first-child", "TeamMemberScores-scores");
+
+    if (teamMember) {
+      teamMember.setAttribute("data-sucks", "you suck");
+    }
+  });
+
   scripts$wkly_report_dashboard$$initDashboard($$dashboard_options$$default);
 
   Number.isInteger = Number.isInteger || function (value) {
@@ -52,7 +75,7 @@
 
   function scripts$wkly_report_dashboard$$initDashboard(options) {
     window.ReportIncompleteCount = 0;
-    window.ReportAvgScore = [];
+    window.ReportMemberCount = 0;
     window.ReportAverages = {
       "avgScore": [],
       "avgSatisfaction": [],
@@ -77,11 +100,12 @@
   }
 
   function scripts$wkly_report_dashboard$$parseTeamMemberScores(weeklyReportsData) {
-    weeklyReportsData["feed"]["entry"].forEach(function (entry) {
+    weeklyReportsData["feed"]["entry"].forEach(function (entry, i) {
       var content = entry["content"]["$t"],
           name = entry["title"]["$t"],
           contentObj = scripts$wkly_report_dashboard$$toJson(content),
           headShot = contentObj["headshot"];
+      ReportMemberCount = i + 1;
 
       if (scripts$wkly_report_dashboard$$isReportIncomplete(content)) {
         ReportIncompleteCount++;
@@ -104,15 +128,43 @@
       scripts$wkly_report_dashboard$$appendNode(document.querySelector("." + $$dashboard_options$$default["mainClassName"]), NoScores);
     }
 
-    scripts$wkly_report_dashboard$$drawAvgScore();
+    scripts$wkly_report_dashboard$$drawAvgScores();
   }
 
   function scripts$wkly_report_dashboard$$add(a, b) {
     return a + b;
   }
 
-  function scripts$wkly_report_dashboard$$drawAvgScore() {
-    document.querySelector("." + $$dashboard_options$$default["avgScoreClassName"]).innerHTML = Math.round(ReportAvgScore.reduce(scripts$wkly_report_dashboard$$add, 0) / ReportAvgScore.length);
+  function scripts$wkly_report_dashboard$$average(ary, aryLength) {
+    var ary = ary.map(function (x) {
+      return parseInt(x, 10);
+    });
+    return Math.round(ary.reduce(scripts$wkly_report_dashboard$$add, 0) / aryLength);
+  }
+
+  function scripts$wkly_report_dashboard$$drawAvgScores() {
+    var tempAggAvg = [],
+        aggAgg = scripts$wkly_report_dashboard$$average(ReportAverages.avgScore, ReportAverages.avgScore.length),
+        completed = document.querySelector(".Aggregate-aggregateCompleted"),
+        domElem = document.createElement("span");
+    domElem.className = "Aggregate-completedPercent";
+
+    document.querySelector("." + $$dashboard_options$$default["avgScoreClassName"]).innerHTML = "" + aggAgg;
+    document.querySelector(".Aggregate-aggregate").style.backgroundColor = scripts$wkly_report_dashboard$$calculateColor([0, aggAgg])[1];
+
+    domElem.innerHTML = Math.round((ReportMemberCount - ReportIncompleteCount) / ReportMemberCount * 100) + "%";
+    completed.insertBefore(domElem, completed.childNodes[0]);
+
+    for (var dimension in ReportAverages) {
+      if (ReportAverages.hasOwnProperty(dimension) && dimension !== "avgScore") {
+        var avg = scripts$wkly_report_dashboard$$average(ReportAverages[dimension], ReportAverages[dimension].length),
+            inverseAvg = 100 - avg,
+            dimensionSet = [inverseAvg, avg],
+            dimensionHTML = document.querySelector("." + dimension);
+
+        scripts$wkly_report_dashboard$$appendNode(dimensionHTML, scripts$wkly_report_dashboard$$doughnutChartFactory(dimensionSet, scripts$wkly_report_dashboard$$calculateColor(dimensionSet), "100px", avg));
+      }
+    }
   }
 
   function scripts$wkly_report_dashboard$$createNoScoresSection() {
@@ -202,7 +254,7 @@
     return colorAry;
   }
 
-  function scripts$wkly_report_dashboard$$doughnutChartFactory(chartData, colors) {
+  function scripts$wkly_report_dashboard$$doughnutChartFactory(chartData, colors, size, dataAtt) {
     var chart = document.createElement("canvas"),
         ctx = chart.getContext('2d'),
         chartCell = document.createElement("div");
@@ -219,19 +271,26 @@
         tooltips: {
           enabled: false
         },
-        responsive: false,
         animation: {
           animateRotate: true,
           animateScale: true
         },
         cutoutPercentage: 70,
+        responsive: false,
         maintainAspectRatio: false
       }
     });
 
+    chartCell.setAttribute("data-avg-score", chartData[1]);
     chart.setAttribute("data-score", chartData[1]);
-    chart.style.width = $$dashboard_options$$default["chartOpts"]["height"];
-    chart.style.height = $$dashboard_options$$default["chartOpts"]["width"];
+
+    if (size) {
+      chart.style.width = chart.style.height = size;
+    } else {
+      chart.style.width = $$dashboard_options$$default["chartOpts"]["height"];
+      chart.style.height = $$dashboard_options$$default["chartOpts"]["width"];
+    }
+
     chart.className = $$dashboard_options$$default["chartOpts"]["chartClassName"];
     chartCell.className = $$dashboard_options$$default["chartOpts"]["cellClassName"];
     chartCell.appendChild(chart);
@@ -283,7 +342,7 @@
         avgScoreElem = document.createElement("span"),
         color = scripts$wkly_report_dashboard$$calculateColor([0, avgScore])[1];
 
-    ReportAvgScore.push(avgScore);
+    ReportAverages["avgScore"].push(avgScore);
     avgScoreElem.style.color = color;
     avgScoreElem.innerHTML = "<br />" + avgScore;
     docFrag.querySelector(headShotElem).style.borderColor = color;

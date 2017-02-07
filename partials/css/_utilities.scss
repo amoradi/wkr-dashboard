@@ -16,7 +16,8 @@
     font-size: $base_font_size;
   }
 
-  &-small-label {
+  &-small-label,
+  &-small-label-reverse {
     font-size: 12px;
   }
 }

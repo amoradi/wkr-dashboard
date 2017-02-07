@@ -5,6 +5,7 @@ body {
   font-weight: 400;
   letter-spacing: 1px;
   color: $dark_gray;
+  -webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -14,4 +15,9 @@ h4,
 h5 {
   font-size: $heading_font_size;
   font-weight: 400;
+}
+
+canvas {
+  width: 60px;
+  height: 60px;
 }

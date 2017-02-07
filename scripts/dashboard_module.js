@@ -1,3 +1,6 @@
+import dashboardOpts from './dashboard_options.js';
+import memberDimensions from './member_dimensions.js';
+
 class TeamMemberScores {
   constructor(options) {
     Object.assign(this, { options });
@@ -10,18 +13,44 @@ class TeamMemberScores {
         this.allTeamMembers = createTeamMembersObj(this.dataFeed["entry"]);
         [this.particpants, this.nonParticpants] = this.allTeamMembers;
       }.bind(this))
-      .catch(function (error) {
-        console.log(`Dashboard not initialized: ${error}`);
-      }
-    );
+      // .catch(function (error) {
+      //   console.log(`Dashboard not initialized: ${error}`);
+      // }
+    //);
+    ;
 
     function createTeamMembersObj(teamMemberArray) {
-      var particpants = teamMemberArray.filter(isParticipant);
-      var nonParticipants = teamMemberArray.filter(isNonParticipant);
+      let participants = teamMemberArray.filter(isParticipant),
+      nonParticipants = teamMemberArray.filter(isNonParticipant),
+      content = "content",
+      field = "$t",
+      title = "title",
+      headShot = "headshot";
 
-      // TODO turn content, name, and headshot fields
-      // unmarshall json to js objects
-      return [particpants, nonParticipants];
+      let scupltedParticipants = participants.map((participant) => {
+        let name = participant[title][field],
+        contentObj = stringToObject(participant[content][field]),
+        tempObj = {
+          name: "",
+          image: "",
+          dimensions: null
+        };
+
+        tempObj.name = name;
+        tempObj.image = contentObj[headShot];
+        tempObj.dimensions = memberDimensions(contentObj);
+
+        return tempObj;
+      });
+
+      let scupltedNonParticipants = nonParticipants.map((nonPart) => {
+        return {
+          name: nonPart[title][field],
+          image: stringToObject(nonPart[content][field])[headShot]
+        }
+      });
+      
+      return [scupltedParticipants, scupltedNonParticipants];
     }
 
     function isNonParticipant(teamMember) {
@@ -34,6 +63,18 @@ class TeamMemberScores {
     function isParticipant(teamMember) {
       return !isNonParticipant(teamMember);
     }
+
+    function stringToObject(contentString) {
+      let array = contentString.split(','),
+      tempObj = {};
+
+      array.forEach(function(item) {
+        item = item.split(': ');
+        tempObj[item[0].trim()] = item[1];
+      });
+
+      return tempObj;
+    }
   }
 
   // isNonParticipants(teamMember) {
@@ -45,8 +86,8 @@ class TeamMemberScores {
   // }
 
   // turn JSON into obj
-  unmarshallSpreadSheetData(spreadSheetJson) {
-    let array = spreadSheetJson.split(','),
+  stringToObject(contentString) {
+    let array = contentString.split(','),
     tempObj = {};
 
     array.forEach(function(item) {
@@ -58,55 +99,4 @@ class TeamMemberScores {
   }
 }
 
-var dashboardOpts = {
-  spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
-  docFrag: document.createDocumentFragment(),
-  dashboardDimensions: [
-    ["satisfactioninverse", "satisfaction"],
-    ["workloadinverse", "workload"],
-    ["prodinverse", "productivity"],
-    ["clarityinverse","clarity"],
-    ["stressinverse", "stresslevel"]
-  ],
-  mainClassName: "TeamMemberScores-colMain",
-  avgScoreClassName: "Aggregate-aggregateScore",
-  scoresContainerClassName: "TeamMemberScores-scores",
-  headingClassName: "TeamMemberScores-heading",
-  rowClass: "TeamMemberScores-row",
-  rowClassWrap: "TeamMemberScores-rowWrap",
-  headShotClassName: "TeamMemberScores-headShot",
-  nameClassName: "u-small-label TeamMemberScores-name",
-  noScoresClassName: "TeamMemberScores-noScores",
-  noScoresHeadingText: "Didn't Fill Out Survey",
-  chartOpts: {
-    height: "60px",
-    width: "60px",
-    cellClassName: "TeamMemberScores-cell",
-    chartClassName: "TeamMemberScores-chart",
-    colors: {
-      inverseColor: "#d3d3d3",
-      activeColors: [
-        {
-          value: "#c26263",
-          condition: function(p) {
-            return p <= 35;
-          }
-        },
-        {
-          value: "#e3e448",
-          condition: function(p) {
-            return p > 36 && p <= 50;
-          }
-        },
-        {
-          value: "#61c275",
-          condition: function(p) {
-            return p > 50;
-          }
-        }
-      ]
-    }
-  }
-};
-
-var myDashboard = new TeamMemberScores(dashboardOpts);
+window.myDashboard = new TeamMemberScores(dashboardOpts);

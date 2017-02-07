@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+const concat = require("gulp-concat");
 var pug = require('gulp-pug');
 var scss = require('gulp-scss');
 const babel = require('gulp-babel');
@@ -7,7 +8,7 @@ var minifyCSS = require('gulp-csso');
 var transpile  = require('gulp-es6-module-transpiler');
 
 gulp.task('html', function(){
-  return gulp.src('partials/html/index.pug')
+  return gulp.src(['partials/html/index.pug', 'partials/html/detail/detail.pug'])
     .pipe(pug())
     .pipe(gulp.dest('build'))
 });

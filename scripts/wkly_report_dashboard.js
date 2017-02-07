@@ -1,4 +1,5 @@
 import dashboardOpts from './dashboard_options.js';
+import dashboardEventHandlers from './dashboard_event_handlers.js';
 
 initDashboard(dashboardOpts);
 
@@ -10,7 +11,7 @@ Number.isInteger = Number.isInteger || function(value) {
 
 function initDashboard(options) {
   window.ReportIncompleteCount = 0;
-  window.ReportAvgScore = [];
+  window.ReportMemberCount = 0;
   window.ReportAverages = {
     "avgScore": [],
     "avgSatisfaction": [],
@@ -36,11 +37,12 @@ function fetchWeeklyReportsData(endPoint) {
 }
 
 function parseTeamMemberScores(weeklyReportsData) {
-  weeklyReportsData["feed"]["entry"].forEach(function(entry) {
+  weeklyReportsData["feed"]["entry"].forEach(function(entry, i) {
     var content = entry["content"]["$t"],
     name = entry["title"]["$t"],
     contentObj = toJson(content),
     headShot = contentObj["headshot"];
+    ReportMemberCount = i + 1;
 
     if (isReportIncomplete(content)) {
       ReportIncompleteCount++;
@@ -66,15 +68,44 @@ function parseTeamMemberScores(weeklyReportsData) {
     appendNode(document.querySelector("." + dashboardOpts["mainClassName"]), NoScores);
   }
 
-  drawAvgScore(); 
+  drawAvgScores(); 
 }
 
 function add(a, b) {
   return a + b;
 }
 
-function drawAvgScore() {
-  document.querySelector("." + dashboardOpts["avgScoreClassName"]).innerHTML = Math.round(ReportAvgScore.reduce(add, 0)/ReportAvgScore.length); 
+function average(ary, aryLength) {
+  var ary = ary.map((x) => parseInt(x, 10));
+  return Math.round(ary.reduce(add, 0)/aryLength)
+}
+
+function drawAvgScores() {
+  let tempAggAvg = [],
+  aggAgg = average(ReportAverages.avgScore, ReportAverages.avgScore.length),
+  completed = document.querySelector(".Aggregate-aggregateCompleted"),
+  domElem = document.createElement("span");
+  domElem.className = "Aggregate-completedPercent";
+
+  document.querySelector("." + dashboardOpts["avgScoreClassName"]).innerHTML = `${aggAgg}`;
+  document.querySelector(".Aggregate-aggregate").style.backgroundColor = calculateColor([0, aggAgg])[1];
+
+  domElem.innerHTML = `${Math.round((ReportMemberCount-ReportIncompleteCount)/ReportMemberCount * 100)}%`;
+  completed.insertBefore(domElem, completed.childNodes[0]);
+
+  for (var dimension in ReportAverages) {
+    if (ReportAverages.hasOwnProperty(dimension) && dimension !== "avgScore") {
+      var avg = average(ReportAverages[dimension], ReportAverages[dimension].length),
+      inverseAvg = 100 - avg,
+      dimensionSet = [inverseAvg, avg],
+      dimensionHTML = document.querySelector(`.${dimension}`);
+
+      appendNode(
+        dimensionHTML,
+        doughnutChartFactory(dimensionSet, calculateColor(dimensionSet), "100px", avg)
+      );
+    }
+  } 
 }
 
 function createNoScoresSection() {
@@ -176,7 +207,7 @@ function calculateColor(dimensionSet) {
   return colorAry
 }
 
-function doughnutChartFactory(chartData, colors) {
+function doughnutChartFactory(chartData, colors, size, dataAtt) {
   var chart = document.createElement("canvas"),
   ctx = chart.getContext('2d'),
   chartCell = document.createElement("div");
@@ -195,19 +226,26 @@ function doughnutChartFactory(chartData, colors) {
       tooltips: {
         enabled: false
       },
-      responsive: false,
       animation: {
         animateRotate: true,
         animateScale: true
       },
       cutoutPercentage: 70,
+      responsive: false,
       maintainAspectRatio: false
     }
   });
 
+  chartCell.setAttribute("data-avg-score", chartData[1]);
   chart.setAttribute("data-score", chartData[1]);
-  chart.style.width = dashboardOpts["chartOpts"]["height"];
-  chart.style.height = dashboardOpts["chartOpts"]["width"];
+
+  if (size) {
+    chart.style.width = chart.style.height = size;
+  } else {
+    chart.style.width = dashboardOpts["chartOpts"]["height"];
+    chart.style.height = dashboardOpts["chartOpts"]["width"];
+  }
+
   chart.className = dashboardOpts["chartOpts"]["chartClassName"]
   chartCell.className = dashboardOpts["chartOpts"]["cellClassName"];
   chartCell.appendChild(chart);
@@ -259,7 +297,7 @@ function setMemberAvgScore(docFrag) {
   avgScoreElem = document.createElement("span"),
   color = calculateColor([0, avgScore])[1];
 
-  ReportAvgScore.push(avgScore);
+  ReportAverages["avgScore"].push(avgScore);
   avgScoreElem.style.color = color;
   avgScoreElem.innerHTML = "<br />" + avgScore;
   docFrag.querySelector(headShotElem).style.borderColor = color;
@@ -277,3 +315,4 @@ function calcTeamMemberAvgScore(docFrag) {
 
   return parseInt(sum/dimensionCount, 10);
 }
+
