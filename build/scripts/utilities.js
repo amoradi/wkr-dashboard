@@ -55,7 +55,42 @@
     }
   };
 
-  var scripts$doughnut_chart$$default = function scripts$doughnut_chart$$default(chartData, colors, size) {
+  function scripts$utilities$$fetchWeeklyReportsData(endPoint, callback) {
+    axios.get(endPoint).then(function (response) {
+      callback(response.data);
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  function scripts$utilities$$stringToObject(contentString) {
+    var array = contentString.split(','),
+        tempObj = {};
+
+    array.forEach(function (item) {
+      item = item.split(': ');
+      tempObj[item[0].trim()] = item[1];
+    });
+
+    return tempObj;
+  }
+
+  function scripts$utilities$$calculateColor(dimensionSet) {
+    var colorAry = [$$dashboard_options$$default["chartOpts"]["colors"]["inverseColor"]];
+
+    $$dashboard_options$$default["chartOpts"]["colors"]["activeColors"].some(function (color) {
+      var isColor = color.condition(dimensionSet[1]);
+
+      if (isColor) {
+        colorAry.push(color.value);
+        return true;
+      }
+    });
+
+    return colorAry;
+  }
+
+  function scripts$utilities$$doughnutChartFactory(chartData, colors, size) {
     var chart = document.createElement("canvas"),
         ctx = chart.getContext('2d'),
         chartCell = document.createElement("div");
@@ -96,5 +131,17 @@
     chartCell.className = $$dashboard_options$$default["chartOpts"]["cellClassName"];
     chartCell.appendChild(chart);
     return chartCell;
-  };
+  }
+
+  function scripts$utilities$$getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
 }).call(undefined);

@@ -13,6 +13,7 @@
 
   var scripts$dashboard_options$$default = {
     spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
+    detailSpreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/1/public/basic?alt=json",
     docFrag: document.createDocumentFragment(),
     dashboardDimensions: [["satisfactioninverse", "satisfaction"], ["workloadinverse", "workload"], ["prodinverse", "productivity"], ["clarityinverse", "clarity"], ["stressinverse", "stresslevel"]],
     dimensionMap: $$dimension_map$$default,
@@ -27,7 +28,7 @@
     noScoresClassName: "TeamMemberScores-noScores",
     noScoresHeadingText: "Didn't Fill Out Survey",
     chartOpts: {
-      largeHeightWidth: "100px",
+      largeHeightWidth: "125px",
       height: "60px",
       width: "60px",
       cellClassName: "TeamMemberScores-cell",

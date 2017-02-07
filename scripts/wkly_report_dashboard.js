@@ -1,8 +1,6 @@
 import dashboardOpts from './dashboard_options.js';
 import dashboardEventHandlers from './dashboard_event_handlers.js';
-import calculateColor from './calculate_color.js';
-import doughnutChartFactory from './doughnut_chart.js';
-
+import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory } from './utilities.js';
 
 (function() {
   initDashboard(dashboardOpts);
@@ -25,19 +23,7 @@ import doughnutChartFactory from './doughnut_chart.js';
       "stress": []
     }
 
-    fetchWeeklyReportsData(options["spreadsheetData"]);
-  }
-
-  function fetchWeeklyReportsData(endPoint) {
-    axios.get(endPoint)
-      .then(function (response) {
-        parseTeamMemberScores(response.data);
-      })
-      // .catch(function (error) {
-      //   console.log(error);
-      // }
-    //)
-    ;
+    fetchWeeklyReportsData(options["spreadsheetData"], parseTeamMemberScores);
   }
 
   function parseTeamMemberScores(weeklyReportsData) {
@@ -196,66 +182,6 @@ import doughnutChartFactory from './doughnut_chart.js';
       );
     }
   }
-
-  // function calculateColor(dimensionSet) {
-  //   var colorAry = [dashboardOpts["chartOpts"]["colors"]["inverseColor"]];
-
-  //   dashboardOpts["chartOpts"]["colors"]["activeColors"].some(function(color) {
-  //     var isColor = color.condition(dimensionSet[1]);
-
-  //     if (isColor) {
-  //       colorAry.push(color.value);
-  //       return true;
-  //     }
-  //   });
-
-  //   return colorAry
-  // }
-
-  // function doughnutChartFactory(chartData, colors, size, dataAtt) {
-  //   var chart = document.createElement("canvas"),
-  //   ctx = chart.getContext('2d'),
-  //   chartCell = document.createElement("div");
-
-  //   new Chart(ctx, {
-  //     type: 'doughnut',
-  //     data: {
-  //       datasets: [
-  //         {
-  //           data: chartData,
-  //           backgroundColor: colors
-  //         }
-  //       ]
-  //     }, 
-  //     options: {
-  //       tooltips: {
-  //         enabled: false
-  //       },
-  //       animation: {
-  //         animateRotate: true,
-  //         animateScale: true
-  //       },
-  //       cutoutPercentage: 70,
-  //       responsive: false,
-  //       maintainAspectRatio: false
-  //     }
-  //   });
-
-  //   chartCell.setAttribute("data-avg-score", chartData[1]);
-  //   chart.setAttribute("data-score", chartData[1]);
-
-  //   if (size) {
-  //     chart.style.width = chart.style.height = size;
-  //   } else {
-  //     chart.style.width = dashboardOpts["chartOpts"]["height"];
-  //     chart.style.height = dashboardOpts["chartOpts"]["width"];
-  //   }
-
-  //   chart.className = dashboardOpts["chartOpts"]["chartClassName"]
-  //   chartCell.className = dashboardOpts["chartOpts"]["cellClassName"];
-  //   chartCell.appendChild(chart);
-  //   return chartCell;
-  // }
 
   function appendNode(docFrag, chartElem) {
     docFrag.appendChild(chartElem);

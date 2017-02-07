@@ -1,25 +1,16 @@
 import dashboardOpts from './dashboard_options.js';
-import calculateColor from './calculate_color.js';
-import doughnutChartFactory from './doughnut_chart.js';
+import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParameterByName, stringToObject } from './utilities.js';
 
 (function() {
-  function getParameterByName(name, url) {
-    if (!url) {
-      url = window.location.href;
-    }
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+
+  fetchWeeklyReportsData(dashboardOpts["detailSpreadsheetData"], initDetailView);
+
+  function initDetailView(data) {
+    let mainDocFrag = document.createDocumentFragment();
+    mainDocFrag.appendChild(drawLeftColumn());
+    mainDocFrag.appendChild(drawRightColumn(data));
+    document.querySelector('.Detail').appendChild(mainDocFrag);
   }
-
-  let mainDocFrag = document.createDocumentFragment();
-  mainDocFrag.appendChild(drawLeftColumn());
-  mainDocFrag.appendChild(drawRightColumn());
-
-  document.querySelector('.Detail').appendChild(mainDocFrag);
 
   function drawLeftColumn() {
     let leftColumn = document.createDocumentFragment();
@@ -43,13 +34,13 @@ import doughnutChartFactory from './doughnut_chart.js';
     return leftColumn;
   }
 
-  function drawRightColumn() {
+  function drawRightColumn(data) {
     let rightColumn = document.createDocumentFragment();
     let colDiv = createDiv();
 
     colDiv.appendChild(drawRightColumnHeader());
+    colDiv.appendChild(drawRightColumnHighsLows(data));
     rightColumn.appendChild(colDiv);
-    //rightColumn.appendChild(drawRightColumnHighsLows());
 
     return rightColumn;
   }
@@ -57,27 +48,47 @@ import doughnutChartFactory from './doughnut_chart.js';
   function drawRightColumnHeader() {
     let rightColHeader = document.createDocumentFragment();
     let header = document.createElement("header");
-  
+    let dimensions = ["satisfaction", "workload", "productivity", "clarity", "stress"];
     header.className = "ScoreBox";
-
-    var dimensions = ["satisfaction", "workload", "productivity", "clarity", "stress"];
 
     dimensions.forEach(function(dimension) {
       header.appendChild(createNestedElems("div", `ScoreBox-dimension ${dimension}`, "span", "u-label", `${dimension}`));;
     });
-
-    // iterate over q params, creating a chart
-    // chartData, colors, size
-    // [invers, number], 
-    // doughnutChartFactory(dimensionSet, calculateColor(dimensionSet))
 
     rightColHeader.appendChild(header);
 
     return rightColHeader;
   }
 
-  function drawRightColumnHighsLows() {
+  function drawRightColumnHighsLows(data) {
+    let teamMembers = data["feed"]["entry"];
+    let teamMember = teamMembers.find(checkName);
+    let teamMemberContent = stringToObject(teamMember["content"]["$t"]);
+    let docFrag = document.createDocumentFragment();
+    let highLabel = document.createElement("span");
+    let lowLabel = document.createElement("span");
+    let high = document.createElement("p");
+    let low = document.createElement("p");
 
+    highLabel.className = lowLabel.className = "u-label";
+    highLabel.innerHTML = "HIGH";
+    lowLabel.innerHTML = "LOW";
+    high.className = "u-padding-btm-40";
+    high.innerHTML = teamMemberContent["high"];
+    low.innerHTML = teamMemberContent["low"];
+    docFrag.appendChild(highLabel);
+    docFrag.appendChild(high);
+    docFrag.appendChild(lowLabel);
+    docFrag.appendChild(low);
+
+    return docFrag;
+  }
+
+  function checkName(teamMember) {
+    let tmName = `name: ${getParameterByName("name")}`;
+    let index = teamMember["content"]["$t"].indexOf(tmName);
+
+    return (index === 0) ? true : false;
   }
 
   function createNestedElems(parentElem, parentClass, childElem, childClass, childText) {
