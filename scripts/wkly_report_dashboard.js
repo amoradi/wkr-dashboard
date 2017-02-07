@@ -92,7 +92,7 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory } from './
 
         appendNode(
           dimensionHTML,
-          doughnutChartFactory(dimensionSet, calculateColor(dimensionSet), dashboardOpts["chartOpts"]["largeHeightWidth"], avg)
+          doughnutChartFactory(dimensionSet, calculateColor(dimensionSet), "100px", avg)
         );
       }
     } 

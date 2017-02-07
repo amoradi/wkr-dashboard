@@ -255,7 +255,7 @@
               dimensionSet = [inverseAvg, avg],
               dimensionHTML = document.querySelector("." + dimension);
 
-          appendNode(dimensionHTML, $$utilities$$doughnutChartFactory(dimensionSet, $$utilities$$calculateColor(dimensionSet), $$dashboard_options$$default["chartOpts"]["largeHeightWidth"], avg));
+          appendNode(dimensionHTML, $$utilities$$doughnutChartFactory(dimensionSet, $$utilities$$calculateColor(dimensionSet), "100px", avg));
         }
       }
     }
