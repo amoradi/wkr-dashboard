@@ -22,7 +22,11 @@
     var teamMember = scripts$dashboard_event_handlers$$closest(e.target, ".TeamMemberScores-row > div:first-child", "TeamMemberScores-scores");
 
     if (teamMember) {
-      teamMember.setAttribute("data-sucks", "you suck");
+      var params = teamMember.getAttribute("data-detail");
+      var name = teamMember.childNodes[1].getAttribute("data-name");
+      var image = teamMember.childNodes[0].style.backgroundImage;
+      var borderColor = teamMember.childNodes[0].style.borderColor;
+      window.location.href = "detail.html?name=" + name + "&image=" + image + "&borderColor=" + borderColor + "&" + params;
     }
   });
 }).call(undefined);

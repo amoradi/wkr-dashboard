@@ -9,10 +9,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 (function () {
   "use strict";
 
+  var $$dimension_map$$default = {
+    "1": "satisfaction",
+    "2": "workload",
+    "3": "productivity",
+    "4": "clarity",
+    "5": "stress"
+  };
+
   var $$dashboard_options$$default = {
     spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
     docFrag: document.createDocumentFragment(),
     dashboardDimensions: [["satisfactioninverse", "satisfaction"], ["workloadinverse", "workload"], ["prodinverse", "productivity"], ["clarityinverse", "clarity"], ["stressinverse", "stresslevel"]],
+    dimensionMap: $$dimension_map$$default,
     mainClassName: "TeamMemberScores-colMain",
     avgScoreClassName: "Aggregate-aggregateScore",
     scoresContainerClassName: "TeamMemberScores-scores",

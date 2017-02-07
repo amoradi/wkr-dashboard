@@ -1,3 +1,5 @@
+import dimensionMap from './dimension_map.js';
+
 export default {
   spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
   docFrag: document.createDocumentFragment(),
@@ -8,6 +10,7 @@ export default {
     ["clarityinverse","clarity"],
     ["stressinverse", "stresslevel"]
   ],
+  dimensionMap: dimensionMap,
   mainClassName: "TeamMemberScores-colMain",
   avgScoreClassName: "Aggregate-aggregateScore",
   scoresContainerClassName: "TeamMemberScores-scores",

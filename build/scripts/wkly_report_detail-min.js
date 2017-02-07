@@ -1,1 +1,1 @@
-"use strict";(function(){console.log("detail page!!")}).call(void 0);
+"use strict";(function(){!function(){function e(e,o){o||(o=window.location.href),e=e.replace(/[\[\]]/g,"\\$&");var n=new RegExp("[?&]"+e+"(=([^&#]*)|&|#|$)"),r=n.exec(o);return r?r[2]?decodeURIComponent(r[2].replace(/\+/g," ")):"":null}document.querySelector(".Detail-name").innerHTML=e("name"),document.querySelector(".Detail-image").style.backgroundImage=e("image"),document.querySelector(".Detail-image").style.borderColor=e("borderColor")}()}).call(void 0);

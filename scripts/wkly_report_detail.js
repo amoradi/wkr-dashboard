@@ -1,10 +1,18 @@
-console.log("detail page!!");
+(function() {
+  function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
 
-// draw dimensions from query params
-// get query params
-// init name
-// init headshot (with color avg)
-// init charts
+  document.querySelector(".Detail-name").innerHTML = getParameterByName("name");
+  document.querySelector(".Detail-image").style.backgroundImage = getParameterByName("image");
+  document.querySelector(".Detail-image").style.borderColor = getParameterByName("borderColor");
 
-// get high log data
-// draw highs lows
+})();
