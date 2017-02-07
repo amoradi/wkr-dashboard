@@ -33,6 +33,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     noScoresClassName: "TeamMemberScores-noScores",
     noScoresHeadingText: "Didn't Fill Out Survey",
     chartOpts: {
+      largeHeightWidth: "100px",
       height: "60px",
       width: "60px",
       cellClassName: "TeamMemberScores-cell",

@@ -27,6 +27,7 @@
     noScoresClassName: "TeamMemberScores-noScores",
     noScoresHeadingText: "Didn't Fill Out Survey",
     chartOpts: {
+      largeHeightWidth: "100px",
       height: "60px",
       width: "60px",
       cellClassName: "TeamMemberScores-cell",
@@ -79,6 +80,64 @@
       window.location.href = "detail.html?name=" + name + "&image=" + image + "&borderColor=" + borderColor + "&" + params;
     }
   });
+
+  var $$calculate_color$$default = function $$calculate_color$$default(dimensionSet) {
+    var colorAry = [$$dashboard_options$$default["chartOpts"]["colors"]["inverseColor"]];
+
+    $$dashboard_options$$default["chartOpts"]["colors"]["activeColors"].some(function (color) {
+      var isColor = color.condition(dimensionSet[1]);
+
+      if (isColor) {
+        colorAry.push(color.value);
+        return true;
+      }
+    });
+
+    return colorAry;
+  };
+
+  var $$doughnut_chart$$default = function $$doughnut_chart$$default(chartData, colors, size) {
+    var chart = document.createElement("canvas"),
+        ctx = chart.getContext('2d'),
+        chartCell = document.createElement("div");
+
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: chartData,
+          backgroundColor: colors
+        }]
+      },
+      options: {
+        tooltips: {
+          enabled: false
+        },
+        animation: {
+          animateRotate: true,
+          animateScale: true
+        },
+        cutoutPercentage: 70,
+        responsive: false,
+        maintainAspectRatio: false
+      }
+    });
+
+    chartCell.setAttribute("data-avg-score", chartData[1]);
+    chart.setAttribute("data-score", chartData[1]);
+
+    if (size) {
+      chart.style.width = chart.style.height = size;
+    } else {
+      chart.style.width = $$dashboard_options$$default["chartOpts"]["height"];
+      chart.style.height = $$dashboard_options$$default["chartOpts"]["width"];
+    }
+
+    chart.className = $$dashboard_options$$default["chartOpts"]["chartClassName"];
+    chartCell.className = $$dashboard_options$$default["chartOpts"]["cellClassName"];
+    chartCell.appendChild(chart);
+    return chartCell;
+  };
 
   (function () {
     initDashboard($$dashboard_options$$default);
@@ -164,7 +223,7 @@
       domElem.className = "Aggregate-completedPercent";
 
       document.querySelector("." + $$dashboard_options$$default["avgScoreClassName"]).innerHTML = "" + aggAgg;
-      document.querySelector(".Aggregate-aggregate").style.backgroundColor = calculateColor([0, aggAgg])[1];
+      document.querySelector(".Aggregate-aggregate").style.backgroundColor = $$calculate_color$$default([0, aggAgg])[1];
 
       domElem.innerHTML = Math.round((ReportMemberCount - ReportIncompleteCount) / ReportMemberCount * 100) + "%";
       completed.insertBefore(domElem, completed.childNodes[0]);
@@ -176,7 +235,7 @@
               dimensionSet = [inverseAvg, avg],
               dimensionHTML = document.querySelector("." + dimension);
 
-          appendNode(dimensionHTML, doughnutChartFactory(dimensionSet, calculateColor(dimensionSet), "100px", avg));
+          appendNode(dimensionHTML, $$doughnut_chart$$default(dimensionSet, $$calculate_color$$default(dimensionSet), $$dashboard_options$$default["chartOpts"]["largeHeightWidth"], avg));
         }
       }
     }
@@ -250,67 +309,69 @@
 
     function filterInvalidMemberFields(dimensionSet) {
       if (Number.isInteger(dimensionSet[0]) && Number.isInteger(dimensionSet[1])) {
-        appendNode($$dashboard_options$$default["docFrag"], doughnutChartFactory(dimensionSet, calculateColor(dimensionSet)));
+        appendNode($$dashboard_options$$default["docFrag"], $$doughnut_chart$$default(dimensionSet, $$calculate_color$$default(dimensionSet)));
       }
     }
 
-    function calculateColor(dimensionSet) {
-      var colorAry = [$$dashboard_options$$default["chartOpts"]["colors"]["inverseColor"]];
+    // function calculateColor(dimensionSet) {
+    //   var colorAry = [dashboardOpts["chartOpts"]["colors"]["inverseColor"]];
 
-      $$dashboard_options$$default["chartOpts"]["colors"]["activeColors"].some(function (color) {
-        var isColor = color.condition(dimensionSet[1]);
+    //   dashboardOpts["chartOpts"]["colors"]["activeColors"].some(function(color) {
+    //     var isColor = color.condition(dimensionSet[1]);
 
-        if (isColor) {
-          colorAry.push(color.value);
-          return true;
-        }
-      });
+    //     if (isColor) {
+    //       colorAry.push(color.value);
+    //       return true;
+    //     }
+    //   });
 
-      return colorAry;
-    }
+    //   return colorAry
+    // }
 
-    function doughnutChartFactory(chartData, colors, size, dataAtt) {
-      var chart = document.createElement("canvas"),
-          ctx = chart.getContext('2d'),
-          chartCell = document.createElement("div");
+    // function doughnutChartFactory(chartData, colors, size, dataAtt) {
+    //   var chart = document.createElement("canvas"),
+    //   ctx = chart.getContext('2d'),
+    //   chartCell = document.createElement("div");
 
-      new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          datasets: [{
-            data: chartData,
-            backgroundColor: colors
-          }]
-        },
-        options: {
-          tooltips: {
-            enabled: false
-          },
-          animation: {
-            animateRotate: true,
-            animateScale: true
-          },
-          cutoutPercentage: 70,
-          responsive: false,
-          maintainAspectRatio: false
-        }
-      });
+    //   new Chart(ctx, {
+    //     type: 'doughnut',
+    //     data: {
+    //       datasets: [
+    //         {
+    //           data: chartData,
+    //           backgroundColor: colors
+    //         }
+    //       ]
+    //     }, 
+    //     options: {
+    //       tooltips: {
+    //         enabled: false
+    //       },
+    //       animation: {
+    //         animateRotate: true,
+    //         animateScale: true
+    //       },
+    //       cutoutPercentage: 70,
+    //       responsive: false,
+    //       maintainAspectRatio: false
+    //     }
+    //   });
 
-      chartCell.setAttribute("data-avg-score", chartData[1]);
-      chart.setAttribute("data-score", chartData[1]);
+    //   chartCell.setAttribute("data-avg-score", chartData[1]);
+    //   chart.setAttribute("data-score", chartData[1]);
 
-      if (size) {
-        chart.style.width = chart.style.height = size;
-      } else {
-        chart.style.width = $$dashboard_options$$default["chartOpts"]["height"];
-        chart.style.height = $$dashboard_options$$default["chartOpts"]["width"];
-      }
+    //   if (size) {
+    //     chart.style.width = chart.style.height = size;
+    //   } else {
+    //     chart.style.width = dashboardOpts["chartOpts"]["height"];
+    //     chart.style.height = dashboardOpts["chartOpts"]["width"];
+    //   }
 
-      chart.className = $$dashboard_options$$default["chartOpts"]["chartClassName"];
-      chartCell.className = $$dashboard_options$$default["chartOpts"]["cellClassName"];
-      chartCell.appendChild(chart);
-      return chartCell;
-    }
+    //   chart.className = dashboardOpts["chartOpts"]["chartClassName"]
+    //   chartCell.className = dashboardOpts["chartOpts"]["cellClassName"];
+    //   chartCell.appendChild(chart);
+    //   return chartCell;
+    // }
 
     function appendNode(docFrag, chartElem) {
       docFrag.appendChild(chartElem);
@@ -353,7 +414,7 @@
       var avgScore = calcTeamMemberAvgScore(docFrag),
           headShotElem = "." + $$dashboard_options$$default["headShotClassName"],
           avgScoreElem = document.createElement("span"),
-          color = calculateColor([0, avgScore])[1];
+          color = $$calculate_color$$default([0, avgScore])[1];
 
       ReportAverages["avgScore"].push(avgScore);
       avgScoreElem.style.color = color;

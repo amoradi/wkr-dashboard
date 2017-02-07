@@ -10,6 +10,12 @@
 
   &-noScores {
     border-top: 1px solid darken($gray, 30%);
+
+    .TeamMemberScores-row {
+      > div:first-child:hover {
+        cursor: default;
+      }
+    }
   }
 
   &-row {

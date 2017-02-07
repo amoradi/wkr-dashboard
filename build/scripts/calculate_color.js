@@ -11,7 +11,7 @@
     "5": "stress"
   };
 
-  var scripts$dashboard_options$$default = {
+  var $$dashboard_options$$default = {
     spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
     docFrag: document.createDocumentFragment(),
     dashboardDimensions: [["satisfactioninverse", "satisfaction"], ["workloadinverse", "workload"], ["prodinverse", "productivity"], ["clarityinverse", "clarity"], ["stressinverse", "stresslevel"]],
@@ -52,5 +52,20 @@
         }]
       }
     }
+  };
+
+  var scripts$calculate_color$$default = function scripts$calculate_color$$default(dimensionSet) {
+    var colorAry = [$$dashboard_options$$default["chartOpts"]["colors"]["inverseColor"]];
+
+    $$dashboard_options$$default["chartOpts"]["colors"]["activeColors"].some(function (color) {
+      var isColor = color.condition(dimensionSet[1]);
+
+      if (isColor) {
+        colorAry.push(color.value);
+        return true;
+      }
+    });
+
+    return colorAry;
   };
 }).call(undefined);

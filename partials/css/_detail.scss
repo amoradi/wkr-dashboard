@@ -19,4 +19,17 @@
     border-width: 12px;
     display: block;
   }
+
+  .TeamMemberScores-cell {
+    position: relative;
+    
+    &:before {
+      content: attr(data-avg-score);
+      display: block;
+      position: absolute;
+      width: 100%;
+      font-size: 32px;
+      line-height: 100px;
+    }
+  }
 }

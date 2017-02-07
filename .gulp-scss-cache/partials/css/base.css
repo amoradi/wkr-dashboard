@@ -49,6 +49,8 @@ canvas {
   justify-content: space-between;
   align-items: center;
   align-content: center; }
+  .ScoreBox-dimension {
+    text-align: center; }
 
 .Aggregate {
   padding: 20px; }
@@ -94,6 +96,8 @@ canvas {
   padding: 20px 40px; }
 .TeamMemberScores-noScores {
   border-top: 1px solid #aaaaa2; }
+  .TeamMemberScores-noScores .TeamMemberScores-row > div:first-child:hover {
+    cursor: default; }
 .TeamMemberScores-row {
   display: flex;
   flex-direction: row;
@@ -154,5 +158,14 @@ canvas {
   box-sizing: border-box;
   border-width: 12px;
   display: block; }
+.Detail .TeamMemberScores-cell {
+  position: relative; }
+  .Detail .TeamMemberScores-cell:before {
+    content: attr(data-avg-score);
+    display: block;
+    position: absolute;
+    width: 100%;
+    font-size: 32px;
+    line-height: 100px; }
 
 /*# sourceMappingURL=base.css.map */
