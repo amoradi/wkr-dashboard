@@ -2,6 +2,11 @@
   &-container {
     max-width: 1180px;
     margin: 0 auto;
+    min-width: 960px;
+
+    @media screen and (max-device-width: $small_break_point_1) {
+      min-width: 0;
+    }
   }
 
   &-section {
@@ -14,7 +19,7 @@
     text-transform: uppercase;
     font-size: $label_font_size;
 
-    @media screen and (min-width: $small_break_point) and (max-width: $med_break_point) {
+    @media screen and (min-device-width: $small_break_point) and (max-device-width: $med_break_point) {
       font-size: $small_label_font_size;
     }
   }

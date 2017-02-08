@@ -2,10 +2,16 @@ body {
   font-family: $base_font;
   background-color: $gray;
   padding: 0 5%;
+  margin: 0;
   font-weight: 400;
   letter-spacing: 1px;
   color: $dark_gray;
   -webkit-font-smoothing: antialiased;
+
+  @media screen and (max-device-width: $extra_small_break_point) {
+    text-align: center;
+    padding: 0;
+  }
 }
 
 h1,

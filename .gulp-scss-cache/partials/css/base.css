@@ -2,10 +2,15 @@ body {
   font-family: "Open Sans", sans-serif;
   background-color: #F3F3F2;
   padding: 0 5%;
+  margin: 0;
   font-weight: 400;
   letter-spacing: 1px;
   color: #444;
   -webkit-font-smoothing: antialiased; }
+  @media screen and (max-device-width: 500px) {
+    body {
+      text-align: center;
+      padding: 0; } }
 
 h1,
 h2,
@@ -21,7 +26,11 @@ canvas {
 
 .u-container {
   max-width: 1180px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  min-width: 960px; }
+  @media screen and (max-device-width: 999px) {
+    .u-container {
+      min-width: 0; } }
 .u-section {
   background-color: #fff;
   border: 1px solid #aaaaa2;
@@ -29,7 +38,7 @@ canvas {
 .u-label {
   text-transform: uppercase;
   font-size: 14px; }
-  @media screen and (min-width: 1000px) and (max-width: 1200px) {
+  @media screen and (min-device-width: 1000px) and (max-device-width: 1200px) {
     .u-label {
       font-size: 13px; } }
 .u-small-label, .u-small-label-reverse {
@@ -44,6 +53,10 @@ canvas {
   justify-content: flex-start;
   align-content: center;
   padding: 20px; }
+  @media screen and (max-device-width: 999px) {
+    .SectionBox {
+      flex-direction: column;
+      justify-content: center; } }
 
 .ScoreBox {
   display: flex;
@@ -53,13 +66,23 @@ canvas {
   align-items: center;
   align-content: center;
   padding-bottom: 50px; }
+  @media screen and (max-device-width: 999px) {
+    .ScoreBox {
+      flex-wrap: wrap;
+      justify-content: space-around; } }
   .ScoreBox-dimension {
     text-align: center; }
+    @media screen and (max-device-width: 999px) {
+      .ScoreBox-dimension {
+        margin: 10px 20px; } }
 
 .Aggregate {
   padding: 20px; }
   .Aggregate-heading {
     padding-left: 20px; }
+    @media screen and (max-device-width: 500px) {
+      .Aggregate-heading {
+        padding-left: 0; } }
   .Aggregate-completedPercent {
     display: block;
     font-weight: bold;
@@ -74,7 +97,7 @@ canvas {
     align-content: center; }
   .Aggregate-container {
     flex-wrap: wrap; }
-    @media screen and (min-width: 1000px) {
+    @media screen and (min-device-width: 1000px) {
       .Aggregate-container {
         flex-wrap: nowrap; } }
   .Aggregate-measureable {
@@ -91,20 +114,20 @@ canvas {
         width: 100%;
         font-size: 32px;
         line-height: 100px; }
-    @media screen and (min-width: 1000px) {
+    @media screen and (min-device-width: 1000px) {
       .Aggregate-measureable {
         flex-basis: 10%;
         width: 10%; }
         .Aggregate-measureable .TeamMemberScores-cell:before {
           line-height: 100px; } }
-    @media screen and (min-width: 1000px) and (max-width: 1200px) {
+    @media screen and (min-device-width: 1000px) and (max-width: 1200px) {
       .Aggregate-measureable .TeamMemberScores-cell:before {
         line-height: 80px;
         font-size: 1.5rem; }
       .Aggregate-measureable canvas {
         width: 80px !important;
         height: 80px !important; } }
-    @media screen and (max-width: 999px) {
+    @media screen and (max-device-width: 999px) {
       .Aggregate-measureable .TeamMemberScores-cell:before {
         line-height: 25vw; }
       .Aggregate-measureable canvas {
@@ -121,20 +144,26 @@ canvas {
     .Aggregate-aggregateScore {
       font-size: 8.25rem;
       color: #fff; }
-      @media screen and (min-width: 1000px) and (max-width: 1200px) {
+      @media screen and (min-device-width: 1000px) and (max-device-width: 1200px) {
         .Aggregate-aggregateScore {
           font-size: 6rem; } }
-    @media screen and (min-width: 500px) {
+    @media screen and (min-device-width: 500px) {
       .Aggregate-aggregate {
         flex-direction: row;
         padding-bottom: 20px; } }
-    @media screen and (min-width: 1000px) {
+    @media screen and (min-device-width: 1000px) {
       .Aggregate-aggregate {
         width: 27%;
         flex-basis: 27%; } }
 
 .TeamMemberScores-scores {
   padding: 20px; }
+  @media screen and (max-device-width: 999px) {
+    .TeamMemberScores-scores {
+      overflow-x: scroll; } }
+  @media screen and (max-device-width: 999px) {
+    .TeamMemberScores-scores > * {
+      min-width: 900px; } }
 .TeamMemberScores-noScores {
   padding: 20px 40px; }
 .TeamMemberScores-noScores {
@@ -152,13 +181,26 @@ canvas {
     cursor: pointer; }
   .TeamMemberScores-rowWrap {
     flex-wrap: wrap;
-    justify-content: flex-start; }
+    justify-content: space-between; }
+    @media only screen and (max-device-width: 500px) and (orientation: portrait) {
+      .TeamMemberScores-rowWrap {
+        justify-content: center; } }
+    @media screen and (min-device-width: 1000px) {
+      .TeamMemberScores-rowWrap {
+        justify-content: flex-start; } }
 .TeamMemberScores-cell {
   flex-basis: 15%;
   text-align: center;
   margin: 20px 0; }
   .TeamMemberScores-cell[data-incomplete-report] {
-    flex-basis: 16.6667%; }
+    flex-basis: 150px;
+    margin-right: 20px; }
+    @media screen and (max-device-width: 500px) {
+      .TeamMemberScores-cell[data-incomplete-report] {
+        margin-right: 0; } }
+    @media screen and (min-device-width: 1000px) {
+      .TeamMemberScores-cell[data-incomplete-report] {
+        flex-basis: 16.6667%; } }
   .TeamMemberScores-cell:not([data-incomplete-report]):first-child {
     width: 38%;
     flex-basis: 38%; }
@@ -186,10 +228,19 @@ canvas {
   padding-left: 10px;
   text-align: left; }
 
-.Detail-column + .Detail-column {
-  padding: 0;
-  padding-top: 50px;
-  width: 65%; }
+.Detail-column {
+  text-align: left; }
+  @media screen and (max-device-width: 999px) {
+    .Detail-column {
+      text-align: center; } }
+  .Detail-column + .Detail-column {
+    padding: 0;
+    padding-top: 50px;
+    width: 65%; }
+    @media screen and (max-device-width: 999px) {
+      .Detail-column + .Detail-column {
+        width: 100%;
+        text-align: left; } }
 .Detail-image {
   width: 250px;
   height: 250px;
@@ -201,6 +252,11 @@ canvas {
   box-sizing: border-box;
   border-width: 17px;
   display: block; }
+  @media screen and (max-device-width: 999px) {
+    .Detail-image {
+      margin: 10px auto;
+      width: 200px;
+      height: 200px; } }
 .Detail .TeamMemberScores-cell {
   position: relative; }
   .Detail .TeamMemberScores-cell:before {
@@ -209,6 +265,6 @@ canvas {
     position: absolute;
     width: 100%;
     font-size: 32px;
-    line-height: 125px; }
+    line-height: 110px; }
 
 /*# sourceMappingURL=base.css.map */

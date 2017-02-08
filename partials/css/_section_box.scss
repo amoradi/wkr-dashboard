@@ -4,6 +4,10 @@
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-content: center;
-
   padding: $container_padding;
+
+  @media screen and (max-device-width: $small_break_point_1) {
+    flex-direction: column;
+    justify-content: center; 
+  }
 }

@@ -3,6 +3,10 @@
 
   &-heading {
     padding-left: $container_padding;
+
+    @media screen and (max-device-width: $extra_small_break_point) {
+      padding-left: 0;
+    }
   }
 
   &-completedPercent {
@@ -25,7 +29,7 @@
   &-container {
     flex-wrap: wrap;
 
-    @media screen and (min-width: $small_break_point) {
+    @media screen and (min-device-width: $small_break_point) {
       flex-wrap: nowrap;
     }
   }
@@ -49,7 +53,7 @@
       }
     }
 
-    @media screen and (min-width: $small_break_point) {
+    @media screen and (min-device-width: $small_break_point) {
       flex-basis: 10%;
       width: 10%;
 
@@ -60,7 +64,7 @@
       }
     }
 
-    @media screen and (min-width: $small_break_point) and (max-width: $med_break_point) {
+    @media screen and (min-device-width: $small_break_point) and (max-width: $med_break_point) {
       .TeamMemberScores-cell {
         &:before {
           line-height: $intermediate_agg_chart_size;
@@ -74,7 +78,7 @@
       }
     }
 
-    @media screen and (max-width: $small_break_point_1) {
+    @media screen and (max-device-width: $small_break_point_1) {
       .TeamMemberScores-cell {
         &:before {
           line-height: $mobile_agg_chart_size;
@@ -103,17 +107,17 @@
       font-size: $heading_font_size * 5.5;
       color: $white;
 
-      @media screen and (min-width: $small_break_point) and (max-width: $med_break_point) {
+      @media screen and (min-device-width: $small_break_point) and (max-device-width: $med_break_point) {
         font-size: $heading_font_size * 4;
       }
     }
     
-    @media screen and (min-width: $extra_small_break_point) {
+    @media screen and (min-device-width: $extra_small_break_point) {
       flex-direction: row;
       padding-bottom: $container_padding;
     }
 
-    @media screen and (min-width: $small_break_point) {
+    @media screen and (min-device-width: $small_break_point) {
       width: 27%;
       flex-basis: 27%;
     }

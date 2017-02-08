@@ -1,7 +1,16 @@
 .TeamMemberScores {
-  
   &-scores {
     padding: $container_padding;
+
+    @media screen and (max-device-width: $small_break_point_1) {
+      overflow-x: scroll;
+    }
+
+    > * {
+      @media screen and (max-device-width: $small_break_point_1) {
+        min-width: 900px;
+      }
+    }
   }
 
   &-noScores {
@@ -32,7 +41,15 @@
 
     &Wrap {
       flex-wrap: wrap;
-      justify-content: flex-start;
+      justify-content: space-between;
+
+      @media only screen and (max-device-width: $extra_small_break_point) and (orientation: portrait) {
+        justify-content: center;
+      }
+
+      @media screen and (min-device-width: $small_break_point) {
+        justify-content: flex-start;
+      }
     }
   }
 
@@ -42,7 +59,16 @@
     margin: 20px 0;
 
     &[data-incomplete-report] {
-      flex-basis: 16.6667%;
+      flex-basis: 150px;
+      margin-right: 20px;
+
+      @media screen and (max-device-width: $extra_small_break_point) {
+        margin-right: 0;
+      }
+
+      @media screen and (min-device-width: $small_break_point) {
+        flex-basis: 16.6667%;
+      }
     }
 
     &:not([data-incomplete-report]):first-child {
