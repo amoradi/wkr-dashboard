@@ -3,8 +3,20 @@ $dark_gray: #444;
 $white: #fff;
 
 $base_font: 'Open Sans', sans-serif;
-$base_font_size: 14px;
-$heading_font_size: 21px;
+$base_font_size: 1rem;
+$label_font_size: 14px;
+$small_label_font_size: 13px;
+$heading_font_size: 1.5rem;
+$large_font_size: 2.25rem;
 
 $container_padding: 20px;
 $container_extra_padding: 40px;
+$agg_chart_size: 100px;
+
+$extra_small_break_point: 500px;
+$small_break_point: 1000px;
+$med_break_point: 1200px;
+$small_break_point_1: 999px;
+
+$mobile_agg_chart_size: 25vw;
+$intermediate_agg_chart_size: 80px;

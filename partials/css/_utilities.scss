@@ -1,6 +1,5 @@
 .u {
   &-container {
-    min-width: 960px;
     max-width: 1180px;
     margin: 0 auto;
   }
@@ -13,7 +12,11 @@
 
   &-label {
     text-transform: uppercase;
-    font-size: $base_font_size;
+    font-size: $label_font_size;
+
+    @media screen and (min-width: $small_break_point) and (max-width: $med_break_point) {
+      font-size: $small_label_font_size;
+    }
   }
 
   &-small-label,

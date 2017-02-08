@@ -8,7 +8,8 @@
   &-completedPercent {
     display: block;
     font-weight: bold;
-    font-size: $heading_font_size;
+    font-size: $large_font_size;
+    line-height: 0.7;
   }
 
   &-container,
@@ -21,25 +22,18 @@
     align-content: center;
   }
 
-  &-aggregate {
-    padding: $container_padding;
-    width: 25%;
-    flex-basis: 25%;
+  &-container {
+    flex-wrap: wrap;
 
-    &Completed {
-      color: $white;
-    }
-
-    &Score {
-      font-size: $heading_font_size * 4;
-      color: $white;
+    @media screen and (min-width: $small_break_point) {
+      flex-wrap: nowrap;
     }
   }
 
   &-measureable {
-
-    flex-basis: 10%;
     text-align: center;
+    flex-basis: 50%;
+    width: 50%;
     margin: 20px 0;
 
     .TeamMemberScores-cell {
@@ -51,8 +45,77 @@
         position: absolute;
         width: 100%;
         font-size: 32px;
-        line-height: 100px;
+        line-height: $agg_chart_size;
       }
+    }
+
+    @media screen and (min-width: $small_break_point) {
+      flex-basis: 10%;
+      width: 10%;
+
+      .TeamMemberScores-cell {
+        &:before {
+          line-height: $agg_chart_size;
+        }
+      }
+    }
+
+    @media screen and (min-width: $small_break_point) and (max-width: $med_break_point) {
+      .TeamMemberScores-cell {
+        &:before {
+          line-height: $intermediate_agg_chart_size;
+          font-size: $heading_font_size;
+        }
+      }
+
+      canvas {
+        width: $intermediate_agg_chart_size !important;
+        height: $intermediate_agg_chart_size !important;
+      }
+    }
+
+    @media screen and (max-width: $small_break_point_1) {
+      .TeamMemberScores-cell {
+        &:before {
+          line-height: $mobile_agg_chart_size;
+        }
+      }
+
+      canvas {
+        width: $mobile_agg_chart_size !important;
+        height: $mobile_agg_chart_size !important;
+      }
+    }
+  }
+
+  &-aggregate {
+    width: 100%;
+    flex-basis: 100%;
+    flex-direction: column;
+    padding: $container_padding;
+    padding-bottom: $container_extra_padding;
+
+    &Completed {
+      color: $white;
+    }
+
+    &Score {
+      font-size: $heading_font_size * 5.5;
+      color: $white;
+
+      @media screen and (min-width: $small_break_point) and (max-width: $med_break_point) {
+        font-size: $heading_font_size * 4;
+      }
+    }
+    
+    @media screen and (min-width: $extra_small_break_point) {
+      flex-direction: row;
+      padding-bottom: $container_padding;
+    }
+
+    @media screen and (min-width: $small_break_point) {
+      width: 27%;
+      flex-basis: 27%;
     }
   }
 }

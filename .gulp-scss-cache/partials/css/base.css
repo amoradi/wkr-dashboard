@@ -12,7 +12,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-size: 21px;
+  font-size: 1.5rem;
   font-weight: 400; }
 
 canvas {
@@ -20,7 +20,6 @@ canvas {
   height: 60px; }
 
 .u-container {
-  min-width: 960px;
   max-width: 1180px;
   margin: 0 auto; }
 .u-section {
@@ -30,6 +29,9 @@ canvas {
 .u-label {
   text-transform: uppercase;
   font-size: 14px; }
+  @media screen and (min-width: 1000px) and (max-width: 1200px) {
+    .u-label {
+      font-size: 13px; } }
 .u-small-label, .u-small-label-reverse {
   font-size: 12px; }
 .u-padding-btm-40 {
@@ -61,7 +63,8 @@ canvas {
   .Aggregate-completedPercent {
     display: block;
     font-weight: bold;
-    font-size: 21px; }
+    font-size: 2.25rem;
+    line-height: 0.7; }
   .Aggregate-container, .Aggregate-aggregate {
     display: flex;
     flex-direction: row;
@@ -69,18 +72,15 @@ canvas {
     justify-content: space-around;
     align-items: center;
     align-content: center; }
-  .Aggregate-aggregate {
-    padding: 20px;
-    width: 25%;
-    flex-basis: 25%; }
-    .Aggregate-aggregateCompleted {
-      color: #fff; }
-    .Aggregate-aggregateScore {
-      font-size: 84px;
-      color: #fff; }
+  .Aggregate-container {
+    flex-wrap: wrap; }
+    @media screen and (min-width: 1000px) {
+      .Aggregate-container {
+        flex-wrap: nowrap; } }
   .Aggregate-measureable {
-    flex-basis: 10%;
     text-align: center;
+    flex-basis: 50%;
+    width: 50%;
     margin: 20px 0; }
     .Aggregate-measureable .TeamMemberScores-cell {
       position: relative; }
@@ -91,6 +91,47 @@ canvas {
         width: 100%;
         font-size: 32px;
         line-height: 100px; }
+    @media screen and (min-width: 1000px) {
+      .Aggregate-measureable {
+        flex-basis: 10%;
+        width: 10%; }
+        .Aggregate-measureable .TeamMemberScores-cell:before {
+          line-height: 100px; } }
+    @media screen and (min-width: 1000px) and (max-width: 1200px) {
+      .Aggregate-measureable .TeamMemberScores-cell:before {
+        line-height: 80px;
+        font-size: 1.5rem; }
+      .Aggregate-measureable canvas {
+        width: 80px !important;
+        height: 80px !important; } }
+    @media screen and (max-width: 999px) {
+      .Aggregate-measureable .TeamMemberScores-cell:before {
+        line-height: 25vw; }
+      .Aggregate-measureable canvas {
+        width: 25vw !important;
+        height: 25vw !important; } }
+  .Aggregate-aggregate {
+    width: 100%;
+    flex-basis: 100%;
+    flex-direction: column;
+    padding: 20px;
+    padding-bottom: 40px; }
+    .Aggregate-aggregateCompleted {
+      color: #fff; }
+    .Aggregate-aggregateScore {
+      font-size: 8.25rem;
+      color: #fff; }
+      @media screen and (min-width: 1000px) and (max-width: 1200px) {
+        .Aggregate-aggregateScore {
+          font-size: 6rem; } }
+    @media screen and (min-width: 500px) {
+      .Aggregate-aggregate {
+        flex-direction: row;
+        padding-bottom: 20px; } }
+    @media screen and (min-width: 1000px) {
+      .Aggregate-aggregate {
+        width: 27%;
+        flex-basis: 27%; } }
 
 .TeamMemberScores-scores {
   padding: 20px; }
@@ -119,11 +160,11 @@ canvas {
   .TeamMemberScores-cell[data-incomplete-report] {
     flex-basis: 16.6667%; }
   .TeamMemberScores-cell:not([data-incomplete-report]):first-child {
-    width: 25%;
-    flex-basis: 25%; }
+    width: 38%;
+    flex-basis: 38%; }
   .TeamMemberScores-cell:not(.u-label):not([data-incomplete-report]):first-child {
     text-align: left;
-    padding-left: 3%;
+    padding-left: 6%;
     box-sizing: border-box; }
 .TeamMemberScores-chart {
   margin: 0 auto; }
