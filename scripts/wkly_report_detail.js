@@ -37,7 +37,14 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
   function drawRightColumn(data) {
     let rightColumn = document.createDocumentFragment();
     let colDiv = createDiv();
+    let backToDashboard = document.createElement("div");
+    let backToDashboardText = document.createElement("span");
 
+    backToDashboard.className = "Detail-back";
+    backToDashboardText.className = "Detail-backText";
+    backToDashboardText.innerHTML = "Back to Dashboard";
+    backToDashboard.appendChild(backToDashboardText);
+    colDiv.appendChild(backToDashboard);
     colDiv.appendChild(drawRightColumnHeader());
     colDiv.appendChild(drawRightColumnHighsLows(data));
     rightColumn.appendChild(colDiv);

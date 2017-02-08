@@ -241,6 +241,13 @@ canvas {
       .Detail-column + .Detail-column {
         width: 100%;
         text-align: left; } }
+.Detail-name {
+  margin-top: 0; }
+.Detail-back {
+  text-align: right;
+  margin-bottom: 20px;
+  position: relative;
+  top: -50px; }
 .Detail-image {
   width: 250px;
   height: 250px;

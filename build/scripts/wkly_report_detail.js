@@ -181,7 +181,14 @@
     function drawRightColumn(data) {
       var rightColumn = document.createDocumentFragment();
       var colDiv = createDiv();
+      var backToDashboard = document.createElement("div");
+      var backToDashboardText = document.createElement("span");
 
+      backToDashboard.className = "Detail-back";
+      backToDashboardText.className = "Detail-backText";
+      backToDashboardText.innerHTML = "Back to Dashboard";
+      backToDashboard.appendChild(backToDashboardText);
+      colDiv.appendChild(backToDashboard);
       colDiv.appendChild(drawRightColumnHeader());
       colDiv.appendChild(drawRightColumnHighsLows(data));
       rightColumn.appendChild(colDiv);

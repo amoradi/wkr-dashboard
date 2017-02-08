@@ -18,6 +18,17 @@
     }
   }
 
+  &-name {
+    margin-top: 0;
+  }
+
+  &-back {
+    text-align: right;
+    margin-bottom: 20px;
+    position: relative;
+    top: -50px;
+  }
+
   &-image {
     width: 250px;
     height: 250px;
