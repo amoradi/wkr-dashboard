@@ -57,10 +57,17 @@ export function calculateColor(dimensionSet) {
   return colorAry
 }
 
-export function doughnutChartFactory(chartData, colors, size ) {
-  let chart = document.createElement("canvas"),
+export function doughnutChartFactory(chartData, colors, size) {
+  var chart = document.createElement("canvas"),
   ctx = chart.getContext('2d'),
   chartCell = document.createElement("div");
+
+  if (size) {
+    ctx.canvas.height = ctx.canvas.width = size * 2;
+  } else {
+    ctx.canvas.height = dashboardOpts["chartOpts"]["height"] * 2;
+    ctx.canvas.width = dashboardOpts["chartOpts"]["width"] * 2;
+  }
 
   new Chart(ctx, {
     type: 'doughnut',
@@ -90,10 +97,10 @@ export function doughnutChartFactory(chartData, colors, size ) {
   chart.setAttribute("data-score", chartData[1]);
 
   if (size) {
-    chart.style.width = chart.style.height = size;
+    chart.style.width = chart.style.height = `${size}px`;
   } else {
-    chart.style.width = dashboardOpts["chartOpts"]["height"];
-    chart.style.height = dashboardOpts["chartOpts"]["width"];
+    chart.style.height = `${dashboardOpts["chartOpts"]["height"]}px`;
+    chart.style.width = `${dashboardOpts["chartOpts"]["width"]}px`;
   }
 
   chart.className = dashboardOpts["chartOpts"]["chartClassName"]

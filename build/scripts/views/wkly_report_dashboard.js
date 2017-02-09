@@ -28,9 +28,9 @@
     noScoresClassName: "TeamMemberScores-noScores",
     noScoresHeadingText: "Didn't Fill Out Survey",
     chartOpts: {
-      largeHeightWidth: "110px",
-      height: "60px",
-      width: "60px",
+      largeHeightWidth: 110,
+      height: 60,
+      width: 60,
       cellClassName: "TeamMemberScores-cell",
       chartClassName: "TeamMemberScores-chart",
       colors: {
@@ -143,6 +143,17 @@
         ctx = chart.getContext('2d'),
         chartCell = document.createElement("div");
 
+    // ctx.canvas.height = ctx.canvas.width = 552;
+
+    if (size) {
+      ctx.canvas.height = ctx.canvas.width = size * 2;
+      console.log("the #: " + size);
+    } else {
+      console.log("the $$");
+      ctx.canvas.height = $$$global$dashboard_options$$default["chartOpts"]["height"] * 2;
+      ctx.canvas.width = $$$global$dashboard_options$$default["chartOpts"]["width"] * 2;
+    }
+
     new Chart(ctx, {
       type: 'doughnut',
       data: {
@@ -169,10 +180,10 @@
     chart.setAttribute("data-score", chartData[1]);
 
     if (size) {
-      chart.style.width = chart.style.height = size;
+      chart.style.width = chart.style.height = size + "px";
     } else {
-      chart.style.width = $$$global$dashboard_options$$default["chartOpts"]["height"];
-      chart.style.height = $$$global$dashboard_options$$default["chartOpts"]["width"];
+      chart.style.height = $$$global$dashboard_options$$default["chartOpts"]["height"] + "px";
+      chart.style.width = $$$global$dashboard_options$$default["chartOpts"]["width"] + "px";
     }
 
     chart.className = $$$global$dashboard_options$$default["chartOpts"]["chartClassName"];
@@ -277,7 +288,7 @@
               dimensionSet = [inverseAvg, avg],
               dimensionHTML = document.querySelector("." + dimension);
 
-          $$$global$utilities$$appendNode(dimensionHTML, $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet), "100px", avg));
+          $$$global$utilities$$appendNode(dimensionHTML, $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet), 100, avg));
         }
       }
     }

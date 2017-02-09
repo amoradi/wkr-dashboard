@@ -93,7 +93,7 @@ import {
 
         appendNode(
           dimensionHTML,
-          doughnutChartFactory(dimensionSet, calculateColor(dimensionSet), "100px", avg)
+          doughnutChartFactory(dimensionSet, calculateColor(dimensionSet), 100, avg)
         );
       }
     } 

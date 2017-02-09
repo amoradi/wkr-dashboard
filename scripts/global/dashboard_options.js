@@ -23,9 +23,9 @@ export default {
   noScoresClassName: "TeamMemberScores-noScores",
   noScoresHeadingText: "Didn't Fill Out Survey",
   chartOpts: {
-    largeHeightWidth: "110px",
-    height: "60px",
-    width: "60px",
+    largeHeightWidth: 110,
+    height: 60,
+    width: 60,
     cellClassName: "TeamMemberScores-cell",
     chartClassName: "TeamMemberScores-chart",
     colors: {

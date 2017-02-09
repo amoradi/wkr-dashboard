@@ -5,6 +5,7 @@ const scss = require('gulp-scss');
 const babel = require('gulp-babel');
 const js_minify = require('gulp-minify');
 const minifyCSS = require('gulp-csso');
+const autoprefixer = require('gulp-autoprefixer');
 const transpile  = require('gulp-es6-module-transpiler');
 
 gulp.task('html', function(){
@@ -16,6 +17,10 @@ gulp.task('html', function(){
 gulp.task('css', function(){
   return gulp.src('partials/css/base.scss')
     .pipe(scss())
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions'],
+      cascade: false
+    }))
     .pipe(minifyCSS())
     .pipe(gulp.dest('build/styles'))
 });
