@@ -4,7 +4,7 @@
     margin: 0 auto;
     min-width: 960px;
     position: relative;
-    bottom: -100px;
+    bottom: -50px;
     opacity: 0;
 
     @media screen and (max-device-width: $small_break_point_1) {
@@ -39,7 +39,7 @@
   &-ready {
     bottom: 0;
     opacity: 1;
-    transition: all 0.5s linear;
+    transition: all 0.2s ease-out;
   }
 
   &-loader {
@@ -59,7 +59,7 @@
     border-bottom: 16px solid $white;
     border-left: 16px solid $white;
 
-    animation: spin 1s linear infinite;
+    animation: spin 0.75s linear infinite;
   }
 }
 

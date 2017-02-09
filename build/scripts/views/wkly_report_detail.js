@@ -62,16 +62,39 @@
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
-    }).catch(function (error) {
-      console.log(error);
     });
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   }
+    // );
+  }
+
+  function $$$global$utilities$$appendNode(docFrag, chartElem) {
+    docFrag.appendChild(chartElem);
+  }
+
+  function $$$global$utilities$$isReportIncomplete(content) {
+    var re = /: x/g;
+
+    return re.test(content);
+  }
+
+  function $$$global$utilities$$add(a, b) {
+    return a + b;
+  }
+
+  function $$$global$utilities$$average(ary, aryLength) {
+    var ary = ary.map(function (x) {
+      return parseInt(x, 10);
+    });
+    return Math.round(ary.reduce($$$global$utilities$$add, 0) / aryLength);
   }
 
   function $$$global$utilities$$stringToObject(contentString) {
-    var array = contentString.split(','),
+    var ary = contentString.split(','),
         tempObj = {};
 
-    array.forEach(function (item) {
+    ary.forEach(function (item) {
       item = item.split(': ');
       tempObj[item[0].trim()] = item[1];
     });
@@ -141,9 +164,11 @@
     if (!url) {
       url = window.location.href;
     }
+
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
+
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
@@ -170,11 +195,11 @@
     }
 
     function drawLeftColumn() {
-      var leftColumn = document.createDocumentFragment();
-      var docFrag = document.createDocumentFragment();
-      var colDiv = createDiv();
-      var name = document.createElement("h1");
-      var image = document.createElement("span");
+      var leftColumn = document.createDocumentFragment(),
+          docFrag = document.createDocumentFragment(),
+          colDiv = createDiv(),
+          name = document.createElement("h1"),
+          image = document.createElement("span");
 
       name.className = "Detail-name";
       image.className = "Detail-image";
@@ -192,10 +217,10 @@
     }
 
     function drawRightColumn(data) {
-      var rightColumn = document.createDocumentFragment();
-      var colDiv = createDiv();
-      var backToDashboard = document.createElement("div");
-      var backToDashboardText = document.createElement("span");
+      var rightColumn = document.createDocumentFragment(),
+          colDiv = createDiv(),
+          backToDashboard = document.createElement("div"),
+          backToDashboardText = document.createElement("span");
 
       backToDashboard.className = "Detail-back";
       backToDashboardText.className = "Detail-backText u-label";
@@ -210,13 +235,13 @@
     }
 
     function drawRightColumnHeader() {
-      var rightColHeader = document.createDocumentFragment();
-      var header = document.createElement("header");
-      var dimensions = ["satisfaction", "workload", "productivity", "clarity", "stress"];
+      var rightColHeader = document.createDocumentFragment(),
+          header = document.createElement("header"),
+          dimensions = ["satisfaction", "workload", "productivity", "clarity", "stress"];
       header.className = "ScoreBox";
 
       dimensions.forEach(function (dimension) {
-        header.appendChild(createNestedElems("div", "ScoreBox-dimension " + dimension, "span", "u-label", "" + dimension));;
+        header.appendChild(createNestedElems("div", "ScoreBox-dimension " + dimension, "span", "u-label", "" + dimension));
       });
 
       rightColHeader.appendChild(header);
@@ -225,14 +250,14 @@
     }
 
     function drawRightColumnHighsLows(data) {
-      var teamMembers = data["feed"]["entry"];
-      var teamMember = teamMembers.find(checkName);
-      var teamMemberContent = $$$global$utilities$$stringToObject(teamMember["content"]["$t"]);
-      var docFrag = document.createDocumentFragment();
-      var highLabel = document.createElement("span");
-      var lowLabel = document.createElement("span");
-      var high = document.createElement("p");
-      var low = document.createElement("p");
+      var teamMembers = data["feed"]["entry"],
+          teamMember = teamMembers.find(checkName),
+          teamMemberContent = $$$global$utilities$$stringToObject(teamMember["content"]["$t"]),
+          docFrag = document.createDocumentFragment(),
+          highLabel = document.createElement("span"),
+          lowLabel = document.createElement("span"),
+          high = document.createElement("p"),
+          low = document.createElement("p");
 
       highLabel.className = lowLabel.className = "u-label";
       highLabel.innerHTML = "HIGH";
@@ -249,23 +274,23 @@
     }
 
     function checkName(teamMember) {
-      var tmName = "name: " + $$$global$utilities$$getParameterByName("name");
-      var index = teamMember["content"]["$t"].indexOf(tmName);
+      var tmName = "name: " + $$$global$utilities$$getParameterByName("name"),
+          index = teamMember["content"]["$t"].indexOf(tmName);
 
       return index === 0 ? true : false;
     }
 
-    function createNestedElems(parentElem, parentClass, childElem, childClass, childText) {
-      var parent = document.createElement(parentElem);
-      parent.className = parentClass;
+    function createNestedElems(prntElem, prntClass, chElem, chClass, chText) {
+      var parent = document.createElement(prntElem);
+      parent.className = prntClass;
 
-      var child = document.createElement(childElem);
-      child.className = childClass;
-      child.innerHTML = childText;
+      var child = document.createElement(chElem);
+      child.className = chClass;
+      child.innerHTML = chText;
 
-      var dimensionVal = $$$global$utilities$$getParameterByName(childText);
-      var dimensionSet = [100 - dimensionVal, dimensionVal];
-      var chart = $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet), $$$global$dashboard_options$$default["chartOpts"]["largeHeightWidth"]);
+      var dimensionVal = $$$global$utilities$$getParameterByName(chText),
+          dimensionSet = [100 - dimensionVal, dimensionVal],
+          chart = $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet), $$$global$dashboard_options$$default["chartOpts"]["largeHeightWidth"]);
 
       parent.appendChild(child);
       parent.appendChild(chart);

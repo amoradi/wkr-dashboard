@@ -1,6 +1,16 @@
 import dashboardOpts from '../global/dashboard_options.js';
 import dashboardEventHandlers from '../event_handlers/dashboard_event_handlers.js';
-import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToObject, viewReady } from '../global/utilities.js';
+import { 
+  appendNode,
+  isReportIncomplete,
+  average,
+  add,
+  calculateColor,
+  fetchWeeklyReportsData,
+  doughnutChartFactory,
+  stringToObject,
+  viewReady
+} from '../global/utilities.js';
 
 (function() {
   initDashboard(dashboardOpts);
@@ -12,8 +22,7 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
   };
 
   function initDashboard(options) {
-    window.ReportIncompleteCount = 0;
-    window.ReportMemberCount = 0;
+    window.ReportIncompleteCount = window.ReportMemberCount = 0;
     window.ReportAverages = {
       "avgScore": [],
       "satisfaction": [],
@@ -28,7 +37,7 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
 
   function parseTeamMemberScores(weeklyReportsData) {
     weeklyReportsData["feed"]["entry"].forEach(function(entry, i) {
-      var content = entry["content"]["$t"],
+      let content = entry["content"]["$t"],
       name = entry["title"]["$t"],
       contentObj = stringToObject(content),
       headShot = contentObj["headshot"];
@@ -62,15 +71,6 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
     viewReady(); 
   }
 
-  function add(a, b) {
-    return a + b;
-  }
-
-  function average(ary, aryLength) {
-    var ary = ary.map((x) => parseInt(x, 10));
-    return Math.round(ary.reduce(add, 0)/aryLength)
-  }
-
   function drawAvgScores() {
     let tempAggAvg = [],
     aggAgg = average(ReportAverages.avgScore, ReportAverages.avgScore.length),
@@ -84,9 +84,9 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
     domElem.innerHTML = `${Math.round((ReportMemberCount-ReportIncompleteCount)/ReportMemberCount * 100)}%`;
     completed.insertBefore(domElem, completed.childNodes[0]);
 
-    for (var dimension in ReportAverages) {
+    for (let dimension in ReportAverages) {
       if (ReportAverages.hasOwnProperty(dimension) && dimension !== "avgScore") {
-        var avg = average(ReportAverages[dimension], ReportAverages[dimension].length),
+        let avg = average(ReportAverages[dimension], ReportAverages[dimension].length),
         inverseAvg = 100 - avg,
         dimensionSet = [inverseAvg, avg],
         dimensionHTML = document.querySelector(`.${dimension}`);
@@ -108,25 +108,19 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
     h2.className = dashboardOpts["headingClassName"];
     h2.innerHTML = dashboardOpts["noScoresHeadingText"]
     NoScores.appendChild(h2);
-    row.className = dashboardOpts["rowClass"] + " " + dashboardOpts["rowClassWrap"];
+    row.className = `${dashboardOpts["rowClass"]} ${dashboardOpts["rowClassWrap"]}`;
     
     return row;
   }
 
-  function isReportIncomplete(content) {
-    var re = /: x/g;
-
-    return re.test(content);
-  }
-
   function drawTeamMember(nameString, headShotUrl, isReportIncomplete) {
-    var nameNode = document.createElement("div"),
+    let nameNode = document.createElement("div"),
     headShot = document.createElement("span"),
     name = document.createElement("span");
     
     nameNode.className = dashboardOpts["chartOpts"]["cellClassName"];
     headShot.className = dashboardOpts["headShotClassName"];
-    headShot.style.backgroundImage = "url(" + headShotUrl + ")";
+    headShot.style.backgroundImage = `url(${headShotUrl})`;
 
     if (isReportIncomplete) {
       nameNode.setAttribute("data-incomplete-report", "true");
@@ -139,7 +133,7 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
     nameNode.appendChild(headShot);
     nameNode.appendChild(name);
 
-    var htmlToAppendTo = (isReportIncomplete) ? window.NoScoresMembers : dashboardOpts["docFrag"];
+    let htmlToAppendTo = (isReportIncomplete) ? window.NoScoresMembers : dashboardOpts["docFrag"];
 
     appendNode(
       htmlToAppendTo,
@@ -149,7 +143,7 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
 
   function createTeamMemberCharts(entryContent, dashboardDimensions) {
     dashboardDimensions.forEach(function(dimensionSet) {
-      var set = [
+      let set = [
         parseInt(entryContent[dimensionSet[0]], 10),
         parseInt(entryContent[dimensionSet[1]], 10)
       ];
@@ -172,29 +166,25 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
     }
   }
 
-  function appendNode(docFrag, chartElem) {
-    docFrag.appendChild(chartElem);
-  }
-
   function drawTeamMemberScores(docFrag, scoresContainerClassName) {
-    var row = document.createElement("div");
+    let row = document.createElement("div");
 
     setMemberAvgScore(docFrag);
     affixNumberToCell(docFrag);
     row.className = dashboardOpts["rowClass"]; 
     row.appendChild(docFrag);
-    document.querySelector("." + scoresContainerClassName).appendChild(row);
+    document.querySelector(`.${scoresContainerClassName}`).appendChild(row);
   }
 
   function affixNumberToCell(docFrag) {
-    var cells = docFrag.querySelectorAll("." + dashboardOpts["chartOpts"]["cellClassName"]);
-    let detailData = [];
+    let cells = docFrag.querySelectorAll(`.${dashboardOpts["chartOpts"]["cellClassName"]}`),
+    detailData = [];
 
-    for (var i = 0, ii = cells.length; i < ii; i++) {
+    for (let i = 0, ii = cells.length; i < ii; i++) {
       if (i > 0) {
         cells[i].setAttribute("data-cell", i);
 
-        var value = cells[i].firstChild.getAttribute("data-score");
+        let value = cells[i].firstChild.getAttribute("data-score");
         pushToReportAverages(i, value);
         detailData.push(`${dashboardOpts["dimensionMap"][i]}=${value}`);
       }
@@ -204,30 +194,30 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToO
   }
 
   function pushToReportAverages(cellNum, value) {
-    var map = dashboardOpts["dimensionMap"];
+    let map = dashboardOpts["dimensionMap"];
 
     window.ReportAverages[map[cellNum]].push(value);
   }
 
   function setMemberAvgScore(docFrag) {
-    var avgScore = calcTeamMemberAvgScore(docFrag),
-    headShotElem = "." + dashboardOpts["headShotClassName"],
+    let avgScore = calcTeamMemberAvgScore(docFrag),
+    headShotElem = `.${dashboardOpts["headShotClassName"]}`,
     avgScoreElem = document.createElement("span"),
     color = calculateColor([0, avgScore])[1];
 
     ReportAverages["avgScore"].push(avgScore);
     avgScoreElem.style.color = color;
-    avgScoreElem.innerHTML = "<br />" + avgScore;
+    avgScoreElem.innerHTML = `<br />${avgScore}`;
     docFrag.querySelector(headShotElem).style.borderColor = color;
-    docFrag.querySelector(headShotElem + " + span").appendChild(avgScoreElem);
+    docFrag.querySelector(`${headShotElem} + span`).appendChild(avgScoreElem);
   }
 
   function calcTeamMemberAvgScore(docFrag) {
-    var scores = docFrag.querySelectorAll("[data-score]"),
+    let scores = docFrag.querySelectorAll("[data-score]"),
     dimensionCount = scores.length,
     sum = 0;
 
-    for (var i = 0; i < dimensionCount; i++) {
+    for (let i = 0; i < dimensionCount; i++) {
       sum += parseInt(scores[i].getAttribute("data-score"), 10);
     }
 

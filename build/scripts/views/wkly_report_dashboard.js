@@ -84,16 +84,39 @@
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
-    }).catch(function (error) {
-      console.log(error);
     });
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   }
+    // );
+  }
+
+  function $$$global$utilities$$appendNode(docFrag, chartElem) {
+    docFrag.appendChild(chartElem);
+  }
+
+  function $$$global$utilities$$isReportIncomplete(content) {
+    var re = /: x/g;
+
+    return re.test(content);
+  }
+
+  function $$$global$utilities$$add(a, b) {
+    return a + b;
+  }
+
+  function $$$global$utilities$$average(ary, aryLength) {
+    var ary = ary.map(function (x) {
+      return parseInt(x, 10);
+    });
+    return Math.round(ary.reduce($$$global$utilities$$add, 0) / aryLength);
   }
 
   function $$$global$utilities$$stringToObject(contentString) {
-    var array = contentString.split(','),
+    var ary = contentString.split(','),
         tempObj = {};
 
-    array.forEach(function (item) {
+    ary.forEach(function (item) {
       item = item.split(': ');
       tempObj[item[0].trim()] = item[1];
     });
@@ -163,9 +186,11 @@
     if (!url) {
       url = window.location.href;
     }
+
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
+
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
@@ -187,8 +212,7 @@
     };
 
     function initDashboard(options) {
-      window.ReportIncompleteCount = 0;
-      window.ReportMemberCount = 0;
+      window.ReportIncompleteCount = window.ReportMemberCount = 0;
       window.ReportAverages = {
         "avgScore": [],
         "satisfaction": [],
@@ -209,7 +233,7 @@
             headShot = contentObj["headshot"];
         ReportMemberCount = i + 1;
 
-        if (isReportIncomplete(content)) {
+        if ($$$global$utilities$$isReportIncomplete(content)) {
           ReportIncompleteCount++;
 
           if (ReportIncompleteCount == 1) {
@@ -226,28 +250,17 @@
       });
 
       if (ReportIncompleteCount) {
-        appendNode(NoScores, NoScoresMembers);
-        appendNode(document.querySelector("." + $$$global$dashboard_options$$default["mainClassName"]), NoScores);
+        $$$global$utilities$$appendNode(NoScores, NoScoresMembers);
+        $$$global$utilities$$appendNode(document.querySelector("." + $$$global$dashboard_options$$default["mainClassName"]), NoScores);
       }
 
       drawAvgScores();
       $$$global$utilities$$viewReady();
     }
 
-    function add(a, b) {
-      return a + b;
-    }
-
-    function average(ary, aryLength) {
-      var ary = ary.map(function (x) {
-        return parseInt(x, 10);
-      });
-      return Math.round(ary.reduce(add, 0) / aryLength);
-    }
-
     function drawAvgScores() {
       var tempAggAvg = [],
-          aggAgg = average(ReportAverages.avgScore, ReportAverages.avgScore.length),
+          aggAgg = $$$global$utilities$$average(ReportAverages.avgScore, ReportAverages.avgScore.length),
           completed = document.querySelector(".Aggregate-aggregateCompleted"),
           domElem = document.createElement("span");
       domElem.className = "Aggregate-completedPercent";
@@ -260,12 +273,12 @@
 
       for (var dimension in ReportAverages) {
         if (ReportAverages.hasOwnProperty(dimension) && dimension !== "avgScore") {
-          var avg = average(ReportAverages[dimension], ReportAverages[dimension].length),
+          var avg = $$$global$utilities$$average(ReportAverages[dimension], ReportAverages[dimension].length),
               inverseAvg = 100 - avg,
               dimensionSet = [inverseAvg, avg],
               dimensionHTML = document.querySelector("." + dimension);
 
-          appendNode(dimensionHTML, $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet), "100px", avg));
+          $$$global$utilities$$appendNode(dimensionHTML, $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet), "100px", avg));
         }
       }
     }
@@ -282,12 +295,6 @@
       row.className = $$$global$dashboard_options$$default["rowClass"] + " " + $$$global$dashboard_options$$default["rowClassWrap"];
 
       return row;
-    }
-
-    function isReportIncomplete(content) {
-      var re = /: x/g;
-
-      return re.test(content);
     }
 
     function drawTeamMember(nameString, headShotUrl, isReportIncomplete) {
@@ -312,7 +319,7 @@
 
       var htmlToAppendTo = isReportIncomplete ? window.NoScoresMembers : $$$global$dashboard_options$$default["docFrag"];
 
-      appendNode(htmlToAppendTo, nameNode);
+      $$$global$utilities$$appendNode(htmlToAppendTo, nameNode);
     }
 
     function createTeamMemberCharts(entryContent, dashboardDimensions) {
@@ -327,12 +334,8 @@
 
     function filterInvalidMemberFields(dimensionSet) {
       if (Number.isInteger(dimensionSet[0]) && Number.isInteger(dimensionSet[1])) {
-        appendNode($$$global$dashboard_options$$default["docFrag"], $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet)));
+        $$$global$utilities$$appendNode($$$global$dashboard_options$$default["docFrag"], $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet)));
       }
-    }
-
-    function appendNode(docFrag, chartElem) {
-      docFrag.appendChild(chartElem);
     }
 
     function drawTeamMemberScores(docFrag, scoresContainerClassName) {
@@ -346,8 +349,8 @@
     }
 
     function affixNumberToCell(docFrag) {
-      var cells = docFrag.querySelectorAll("." + $$$global$dashboard_options$$default["chartOpts"]["cellClassName"]);
-      var detailData = [];
+      var cells = docFrag.querySelectorAll("." + $$$global$dashboard_options$$default["chartOpts"]["cellClassName"]),
+          detailData = [];
 
       for (var i = 0, ii = cells.length; i < ii; i++) {
         if (i > 0) {

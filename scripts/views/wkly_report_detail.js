@@ -1,10 +1,20 @@
 import dashboardOpts from '../global/dashboard_options.js';
 import detailEventHandlers from '../event_handlers/detail_event_handlers.js';
-import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParameterByName, stringToObject, viewReady } from '../global/utilities.js';
+import {
+  fetchWeeklyReportsData,
+  calculateColor,
+  doughnutChartFactory,
+  getParameterByName,
+  stringToObject,
+  viewReady
+} from '../global/utilities.js';
 
 (function() {
 
-  fetchWeeklyReportsData(dashboardOpts["detailSpreadsheetData"], initDetailView);
+  fetchWeeklyReportsData(
+    dashboardOpts["detailSpreadsheetData"],
+    initDetailView
+  );
 
   function initDetailView(data) {
     let mainDocFrag = document.createDocumentFragment();
@@ -15,11 +25,11 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
   }
 
   function drawLeftColumn() {
-    let leftColumn = document.createDocumentFragment();
-    let docFrag = document.createDocumentFragment();
-    let colDiv = createDiv();
-    let name = document.createElement("h1");
-    let image = document.createElement("span");
+    let leftColumn = document.createDocumentFragment(),
+    docFrag = document.createDocumentFragment(),
+    colDiv = createDiv(),
+    name = document.createElement("h1"),
+    image = document.createElement("span");
 
     name.className = "Detail-name";
     image.className = "Detail-image";
@@ -37,10 +47,10 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
   }
 
   function drawRightColumn(data) {
-    let rightColumn = document.createDocumentFragment();
-    let colDiv = createDiv();
-    let backToDashboard = document.createElement("div");
-    let backToDashboardText = document.createElement("span");
+    let rightColumn = document.createDocumentFragment(),
+    colDiv = createDiv(),
+    backToDashboard = document.createElement("div"),
+    backToDashboardText = document.createElement("span");
 
     backToDashboard.className = "Detail-back";
     backToDashboardText.className = "Detail-backText u-label";
@@ -55,13 +65,23 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
   }
 
   function drawRightColumnHeader() {
-    let rightColHeader = document.createDocumentFragment();
-    let header = document.createElement("header");
-    let dimensions = ["satisfaction", "workload", "productivity", "clarity", "stress"];
+    let rightColHeader = document.createDocumentFragment(),
+    header = document.createElement("header"),
+    dimensions = [
+      "satisfaction", "workload", "productivity", "clarity", "stress"
+    ];
     header.className = "ScoreBox";
 
     dimensions.forEach(function(dimension) {
-      header.appendChild(createNestedElems("div", `ScoreBox-dimension ${dimension}`, "span", "u-label", `${dimension}`));;
+      header.appendChild(
+        createNestedElems(
+          "div",
+          `ScoreBox-dimension ${dimension}`,
+          "span",
+          "u-label",
+          `${dimension}`
+        )
+      );
     });
 
     rightColHeader.appendChild(header);
@@ -70,14 +90,14 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
   }
 
   function drawRightColumnHighsLows(data) {
-    let teamMembers = data["feed"]["entry"];
-    let teamMember = teamMembers.find(checkName);
-    let teamMemberContent = stringToObject(teamMember["content"]["$t"]);
-    let docFrag = document.createDocumentFragment();
-    let highLabel = document.createElement("span");
-    let lowLabel = document.createElement("span");
-    let high = document.createElement("p");
-    let low = document.createElement("p");
+    let teamMembers = data["feed"]["entry"],
+    teamMember = teamMembers.find(checkName),
+    teamMemberContent = stringToObject(teamMember["content"]["$t"]),
+    docFrag = document.createDocumentFragment(),
+    highLabel = document.createElement("span"),
+    lowLabel = document.createElement("span"),
+    high = document.createElement("p"),
+    low = document.createElement("p");
 
     highLabel.className = lowLabel.className = "u-label";
     highLabel.innerHTML = "HIGH";
@@ -94,23 +114,27 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
   }
 
   function checkName(teamMember) {
-    let tmName = `name: ${getParameterByName("name")}`;
-    let index = teamMember["content"]["$t"].indexOf(tmName);
+    let tmName = `name: ${getParameterByName("name")}`,
+    index = teamMember["content"]["$t"].indexOf(tmName);
 
     return (index === 0) ? true : false;
   }
 
-  function createNestedElems(parentElem, parentClass, childElem, childClass, childText) {
-    let parent = document.createElement(parentElem);
-    parent.className = parentClass;
+  function createNestedElems(prntElem, prntClass, chElem, chClass, chText) {
+    let parent = document.createElement(prntElem);
+    parent.className = prntClass;
 
-    let child = document.createElement(childElem);
-    child.className = childClass;
-    child.innerHTML = childText;
+    let child = document.createElement(chElem);
+    child.className = chClass;
+    child.innerHTML = chText;
 
-    let dimensionVal = getParameterByName(childText);
-    let dimensionSet = [100 - dimensionVal, dimensionVal];
-    let chart = doughnutChartFactory(dimensionSet, calculateColor(dimensionSet), dashboardOpts["chartOpts"]["largeHeightWidth"]);
+    let dimensionVal = getParameterByName(chText),
+    dimensionSet = [100 - dimensionVal, dimensionVal],
+    chart = doughnutChartFactory(
+      dimensionSet,
+      calculateColor(dimensionSet),
+      dashboardOpts["chartOpts"]["largeHeightWidth"]
+    );
 
     parent.appendChild(child);
     parent.appendChild(chart);
@@ -119,7 +143,7 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
   }
 
   function createDiv() {
-    let colDiv = document.createElement("div")
+    let colDiv = document.createElement("div");
     colDiv.className = "Detail-column";
 
     return colDiv;
