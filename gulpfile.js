@@ -1,11 +1,11 @@
-var gulp = require('gulp');
+const gulp = require('gulp');
 const concat = require("gulp-concat");
-var pug = require('gulp-pug');
-var scss = require('gulp-scss');
+const pug = require('gulp-pug');
+const scss = require('gulp-scss');
 const babel = require('gulp-babel');
-var js_minify = require('gulp-minify');
-var minifyCSS = require('gulp-csso');
-var transpile  = require('gulp-es6-module-transpiler');
+const js_minify = require('gulp-minify');
+const minifyCSS = require('gulp-csso');
+const transpile  = require('gulp-es6-module-transpiler');
 
 gulp.task('html', function(){
   return gulp.src(['partials/html/index.pug', 'partials/html/detail/detail.pug'])
@@ -21,7 +21,7 @@ gulp.task('css', function(){
 });
 
 gulp.task('js', function(){
-  return gulp.src('scripts/*.js')
+  return gulp.src(['scripts/views/wkly_report_dashboard.js', 'scripts/views/wkly_report_detail.js'])
     .pipe(transpile({
       formatter: 'bundle'
     }))
