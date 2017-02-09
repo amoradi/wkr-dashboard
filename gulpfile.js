@@ -8,7 +8,7 @@ const minifyCSS = require('gulp-csso');
 const transpile  = require('gulp-es6-module-transpiler');
 
 gulp.task('html', function(){
-  return gulp.src(['partials/html/index.pug', 'partials/html/detail/detail.pug'])
+  return gulp.src(['partials/html/dashboard.pug', 'partials/html/detail/detail.pug'])
     .pipe(pug())
     .pipe(gulp.dest('build'))
 });

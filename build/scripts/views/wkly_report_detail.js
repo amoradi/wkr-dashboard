@@ -56,17 +56,17 @@
   };
 
   var $$$event_handlers$detail_event_handlers$$default = document.querySelector("body").addEventListener("click", function (e) {
-    if (e.target.className === "Detail-backText u-label") window.location.href = "index.html";
+    if (e.target.className === "Detail-backText u-label") {
+      window.location.href = "dashboard.html";
+    }
   });
 
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
+    }).catch(function (error) {
+      console.log(error);
     });
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   }
-    // );
   }
 
   function $$$global$utilities$$appendNode(docFrag, chartElem) {

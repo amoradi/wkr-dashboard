@@ -14,14 +14,21 @@ function closest(elem, selector, limitClass) {
   } while (elem);
 }
 
-document.querySelector(".TeamMemberScores-scores").addEventListener("click", function(e){
-  let teamMember = closest(e.target, ".TeamMemberScores-row > div:first-child","TeamMemberScores-scores");
+document.querySelector(".TeamMemberScores-scores").addEventListener(
+  "click",
+  function(e) {
+    let teamMember = closest(
+      e.target,
+      ".TeamMemberScores-row > div:first-child",
+      "TeamMemberScores-scores"
+    );
 
-  if (teamMember) {
-    let params = teamMember.getAttribute("data-detail");
-    let name = teamMember.childNodes[1].getAttribute("data-name");
-    let image = teamMember.childNodes[0].style.backgroundImage;
-    let borderColor = teamMember.childNodes[0].style.borderColor;
-    window.location.href = `detail.html?name=${name}&image=${image}&borderColor=${borderColor}&${params}`;
-  }
+    if (teamMember) {
+      let params = teamMember.getAttribute("data-detail"),
+      name = teamMember.childNodes[1].getAttribute("data-name"),
+      image = teamMember.childNodes[0].style.backgroundImage,
+      borderColor = teamMember.childNodes[0].style.borderColor;
+      
+      window.location.href = `detail.html?name=${name}&image=${image}&borderColor=${borderColor}&${params}`;
+    }
 });

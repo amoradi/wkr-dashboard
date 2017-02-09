@@ -74,21 +74,20 @@
     var teamMember = $$$event_handlers$dashboard_event_handlers$$closest(e.target, ".TeamMemberScores-row > div:first-child", "TeamMemberScores-scores");
 
     if (teamMember) {
-      var params = teamMember.getAttribute("data-detail");
-      var name = teamMember.childNodes[1].getAttribute("data-name");
-      var image = teamMember.childNodes[0].style.backgroundImage;
-      var borderColor = teamMember.childNodes[0].style.borderColor;
+      var params = teamMember.getAttribute("data-detail"),
+          name = teamMember.childNodes[1].getAttribute("data-name"),
+          image = teamMember.childNodes[0].style.backgroundImage,
+          borderColor = teamMember.childNodes[0].style.borderColor;
+
       window.location.href = "detail.html?name=" + name + "&image=" + image + "&borderColor=" + borderColor + "&" + params;
     }
   });
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
+    }).catch(function (error) {
+      console.log(error);
     });
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   }
-    // );
   }
 
   function $$$global$utilities$$appendNode(docFrag, chartElem) {
