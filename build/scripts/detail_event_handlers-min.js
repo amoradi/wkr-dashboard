@@ -1,0 +1,1 @@
+"use strict";(function(){document.querySelector("body").addEventListener("click",function(e){"Detail-backText u-label"===e.target.className&&(window.location.href="index.html")})}).call(void 0);

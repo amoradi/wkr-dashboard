@@ -32,4 +32,9 @@
   &-padding-btm-40 {
     padding-bottom: 40px;
   }
+
+  &-ready {
+    opacity: 1;
+    transition: opacity 0.5s linear;
+  }
 }

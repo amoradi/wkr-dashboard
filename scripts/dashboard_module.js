@@ -76,27 +76,6 @@ class TeamMemberScores {
       return tempObj;
     }
   }
-
-  // isNonParticipants(teamMember) {
-  //   let scores = unmarshallSpreadSheetData(teamMember["content"]["$t"]),
-  //   name = entry["title"]["$t"],
-  //   headShot = scores["headshot"];
-
-  //   if (isReportIncomplete(content)) {
-  // }
-
-  // turn JSON into obj
-  stringToObject(contentString) {
-    let array = contentString.split(','),
-    tempObj = {};
-
-    array.forEach(function(item) {
-      item = item.split(': ');
-      tempObj[item[0].trim()] = item[1];
-    });
-
-    return tempObj;
-  }
 }
 
 window.myDashboard = new TeamMemberScores(dashboardOpts);

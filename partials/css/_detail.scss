@@ -24,9 +24,18 @@
 
   &-back {
     text-align: right;
+    top: -50px;
     margin-bottom: 20px;
     position: relative;
-    top: -50px;
+    
+    @media screen and (max-device-width: $small_break_point_1) {
+      text-align: center;
+      top: -20px;
+    }
+
+    &Text {
+      cursor: pointer;
+    }
   }
 
   &-image {

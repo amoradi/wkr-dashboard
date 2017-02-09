@@ -80,7 +80,8 @@
       var borderColor = teamMember.childNodes[0].style.borderColor;
       window.location.href = "detail.html?name=" + name + "&image=" + image + "&borderColor=" + borderColor + "&" + params;
     }
-  });function $$utilities$$fetchWeeklyReportsData(endPoint, callback) {
+  });
+  function $$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
     }).catch(function (error) {
@@ -170,6 +171,10 @@
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
+  function $$utilities$$viewReady() {
+    document.querySelector("body").setAttribute("class", "u-ready");
+  }
+
   (function () {
     initDashboard($$dashboard_options$$default);
 
@@ -196,7 +201,7 @@
       weeklyReportsData["feed"]["entry"].forEach(function (entry, i) {
         var content = entry["content"]["$t"],
             name = entry["title"]["$t"],
-            contentObj = toJson(content),
+            contentObj = $$utilities$$stringToObject(content),
             headShot = contentObj["headshot"];
         ReportMemberCount = i + 1;
 
@@ -222,6 +227,7 @@
       }
 
       drawAvgScores();
+      $$utilities$$viewReady();
     }
 
     function add(a, b) {
@@ -303,18 +309,6 @@
       var htmlToAppendTo = isReportIncomplete ? window.NoScoresMembers : $$dashboard_options$$default["docFrag"];
 
       appendNode(htmlToAppendTo, nameNode);
-    }
-
-    function toJson(malformedJson) {
-      var array = malformedJson.split(','),
-          tempObj = {};
-
-      array.forEach(function (item) {
-        item = item.split(': ');
-        tempObj[item[0].trim()] = item[1];
-      });
-
-      return tempObj;
     }
 
     function createTeamMemberCharts(entryContent, dashboardDimensions) {

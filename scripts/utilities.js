@@ -94,3 +94,7 @@ export function getParameterByName(name, url) {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+export function viewReady() {
+  document.querySelector("body").setAttribute("class", "u-ready");
+}

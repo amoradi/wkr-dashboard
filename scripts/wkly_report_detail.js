@@ -1,5 +1,6 @@
 import dashboardOpts from './dashboard_options.js';
-import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParameterByName, stringToObject } from './utilities.js';
+import detailEventHandlers from './detail_event_handlers.js';
+import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParameterByName, stringToObject, viewReady } from './utilities.js';
 
 (function() {
 
@@ -10,6 +11,7 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
     mainDocFrag.appendChild(drawLeftColumn());
     mainDocFrag.appendChild(drawRightColumn(data));
     document.querySelector('.Detail').appendChild(mainDocFrag);
+    viewReady();
   }
 
   function drawLeftColumn() {
@@ -41,7 +43,7 @@ import { fetchWeeklyReportsData, calculateColor, doughnutChartFactory, getParame
     let backToDashboardText = document.createElement("span");
 
     backToDashboard.className = "Detail-back";
-    backToDashboardText.className = "Detail-backText";
+    backToDashboardText.className = "Detail-backText u-label";
     backToDashboardText.innerHTML = "Back to Dashboard";
     backToDashboard.appendChild(backToDashboardText);
     colDiv.appendChild(backToDashboard);

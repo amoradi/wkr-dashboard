@@ -1,6 +1,6 @@
 import dashboardOpts from './dashboard_options.js';
 import dashboardEventHandlers from './dashboard_event_handlers.js';
-import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory } from './utilities.js';
+import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory, stringToObject, viewReady } from './utilities.js';
 
 (function() {
   initDashboard(dashboardOpts);
@@ -30,7 +30,7 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory } from './
     weeklyReportsData["feed"]["entry"].forEach(function(entry, i) {
       var content = entry["content"]["$t"],
       name = entry["title"]["$t"],
-      contentObj = toJson(content),
+      contentObj = stringToObject(content),
       headShot = contentObj["headshot"];
       ReportMemberCount = i + 1;
 
@@ -58,7 +58,8 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory } from './
       appendNode(document.querySelector("." + dashboardOpts["mainClassName"]), NoScores);
     }
 
-    drawAvgScores(); 
+    drawAvgScores();
+    viewReady(); 
   }
 
   function add(a, b) {
@@ -144,18 +145,6 @@ import { calculateColor, fetchWeeklyReportsData, doughnutChartFactory } from './
       htmlToAppendTo,
       nameNode
     );
-  }
-
-  function toJson(malformedJson) {
-    var array = malformedJson.split(','),
-    tempObj = {};
-
-    array.forEach(function(item) {
-      item = item.split(': ');
-      tempObj[item[0].trim()] = item[1];
-    });
-
-    return tempObj;
   }
 
   function createTeamMemberCharts(entryContent, dashboardDimensions) {

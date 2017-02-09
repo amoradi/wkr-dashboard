@@ -6,7 +6,8 @@ body {
   font-weight: 400;
   letter-spacing: 1px;
   color: #444;
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  opacity: 0; }
   @media screen and (max-device-width: 500px) {
     body {
       text-align: center;
@@ -45,6 +46,9 @@ canvas {
   font-size: 12px; }
 .u-padding-btm-40 {
   padding-bottom: 40px; }
+.u-ready {
+  opacity: 1;
+  transition: opacity 0.5s linear; }
 
 .SectionBox {
   display: flex;
@@ -245,9 +249,15 @@ canvas {
   margin-top: 0; }
 .Detail-back {
   text-align: right;
+  top: -50px;
   margin-bottom: 20px;
-  position: relative;
-  top: -50px; }
+  position: relative; }
+  @media screen and (max-device-width: 999px) {
+    .Detail-back {
+      text-align: center;
+      top: -20px; } }
+  .Detail-backText {
+    cursor: pointer; }
 .Detail-image {
   width: 250px;
   height: 250px;

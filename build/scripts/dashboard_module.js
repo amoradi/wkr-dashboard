@@ -2,8 +2,6 @@
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 (function () {
@@ -80,115 +78,85 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }];
   };
 
-  var scripts$dashboard_module$$TeamMemberScores = function () {
-    function scripts$dashboard_module$$TeamMemberScores(options) {
-      _classCallCheck(this, scripts$dashboard_module$$TeamMemberScores);
+  var scripts$dashboard_module$$TeamMemberScores = function scripts$dashboard_module$$TeamMemberScores(options) {
+    _classCallCheck(this, scripts$dashboard_module$$TeamMemberScores);
 
-      Object.assign(this, { options: options });
+    Object.assign(this, { options: options });
 
-      axios.get(this.options["spreadsheetData"]).then(function (response) {
-        this.data = response.data;
-        this.dataFeed = this.data["feed"];
-        this.teamMemberCount = parseInt(this.dataFeed["openSearch$totalResults"]["$t"], 10);
-        this.allTeamMembers = createTeamMembersObj(this.dataFeed["entry"]);
+    axios.get(this.options["spreadsheetData"]).then(function (response) {
+      this.data = response.data;
+      this.dataFeed = this.data["feed"];
+      this.teamMemberCount = parseInt(this.dataFeed["openSearch$totalResults"]["$t"], 10);
+      this.allTeamMembers = createTeamMembersObj(this.dataFeed["entry"]);
 
-        var _allTeamMembers = _slicedToArray(this.allTeamMembers, 2);
+      var _allTeamMembers = _slicedToArray(this.allTeamMembers, 2);
 
-        this.particpants = _allTeamMembers[0];
-        this.nonParticpants = _allTeamMembers[1];
-      }.bind(this))
-      // .catch(function (error) {
-      //   console.log(`Dashboard not initialized: ${error}`);
-      // }
-      //);
-      ;
+      this.particpants = _allTeamMembers[0];
+      this.nonParticpants = _allTeamMembers[1];
+    }.bind(this))
+    // .catch(function (error) {
+    //   console.log(`Dashboard not initialized: ${error}`);
+    // }
+    //);
+    ;
 
-      function createTeamMembersObj(teamMemberArray) {
-        var participants = teamMemberArray.filter(isParticipant),
-            nonParticipants = teamMemberArray.filter(isNonParticipant),
-            content = "content",
-            field = "$t",
-            title = "title",
-            headShot = "headshot";
+    function createTeamMembersObj(teamMemberArray) {
+      var participants = teamMemberArray.filter(isParticipant),
+          nonParticipants = teamMemberArray.filter(isNonParticipant),
+          content = "content",
+          field = "$t",
+          title = "title",
+          headShot = "headshot";
 
-        var scupltedParticipants = participants.map(function (participant) {
-          var name = participant[title][field],
-              contentObj = stringToObject(participant[content][field]),
-              tempObj = {
-            name: "",
-            image: "",
-            dimensions: null
-          };
+      var scupltedParticipants = participants.map(function (participant) {
+        var name = participant[title][field],
+            contentObj = stringToObject(participant[content][field]),
+            tempObj = {
+          name: "",
+          image: "",
+          dimensions: null
+        };
 
-          tempObj.name = name;
-          tempObj.image = contentObj[headShot];
-          tempObj.dimensions = $$member_dimensions$$default(contentObj);
-
-          return tempObj;
-        });
-
-        var scupltedNonParticipants = nonParticipants.map(function (nonPart) {
-          return {
-            name: nonPart[title][field],
-            image: stringToObject(nonPart[content][field])[headShot]
-          };
-        });
-
-        return [scupltedParticipants, scupltedNonParticipants];
-      }
-
-      function isNonParticipant(teamMember) {
-        var scores = teamMember["content"]["$t"];
-        var re = /: x/g;
-
-        return re.test(scores);
-      }
-
-      function isParticipant(teamMember) {
-        return !isNonParticipant(teamMember);
-      }
-
-      function stringToObject(contentString) {
-        var array = contentString.split(','),
-            tempObj = {};
-
-        array.forEach(function (item) {
-          item = item.split(': ');
-          tempObj[item[0].trim()] = item[1];
-        });
+        tempObj.name = name;
+        tempObj.image = contentObj[headShot];
+        tempObj.dimensions = $$member_dimensions$$default(contentObj);
 
         return tempObj;
-      }
+      });
+
+      var scupltedNonParticipants = nonParticipants.map(function (nonPart) {
+        return {
+          name: nonPart[title][field],
+          image: stringToObject(nonPart[content][field])[headShot]
+        };
+      });
+
+      return [scupltedParticipants, scupltedNonParticipants];
     }
 
-    // isNonParticipants(teamMember) {
-    //   let scores = unmarshallSpreadSheetData(teamMember["content"]["$t"]),
-    //   name = entry["title"]["$t"],
-    //   headShot = scores["headshot"];
+    function isNonParticipant(teamMember) {
+      var scores = teamMember["content"]["$t"];
+      var re = /: x/g;
 
-    //   if (isReportIncomplete(content)) {
-    // }
+      return re.test(scores);
+    }
 
-    // turn JSON into obj
+    function isParticipant(teamMember) {
+      return !isNonParticipant(teamMember);
+    }
 
+    function stringToObject(contentString) {
+      var array = contentString.split(','),
+          tempObj = {};
 
-    _createClass(scripts$dashboard_module$$TeamMemberScores, [{
-      key: "stringToObject",
-      value: function stringToObject(contentString) {
-        var array = contentString.split(','),
-            tempObj = {};
+      array.forEach(function (item) {
+        item = item.split(': ');
+        tempObj[item[0].trim()] = item[1];
+      });
 
-        array.forEach(function (item) {
-          item = item.split(': ');
-          tempObj[item[0].trim()] = item[1];
-        });
-
-        return tempObj;
-      }
-    }]);
-
-    return scripts$dashboard_module$$TeamMemberScores;
-  }();
+      return tempObj;
+    }
+  };
 
   window.myDashboard = new scripts$dashboard_module$$TeamMemberScores($$dashboard_options$$default);
 }).call(undefined);

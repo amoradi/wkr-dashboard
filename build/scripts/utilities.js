@@ -144,4 +144,8 @@
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
+
+  function scripts$utilities$$viewReady() {
+    document.querySelector("body").setAttribute("class", "u-ready");
+  }
 }).call(undefined);

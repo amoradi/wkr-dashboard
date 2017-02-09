@@ -55,6 +55,10 @@
     }
   };
 
+  var $$detail_event_handlers$$default = document.querySelector("body").addEventListener("click", function (e) {
+    if (e.target.className === "Detail-backText u-label") window.location.href = "index.html";
+  });
+
   function $$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
@@ -145,6 +149,10 @@
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 
+  function $$utilities$$viewReady() {
+    document.querySelector("body").setAttribute("class", "u-ready");
+  }
+
   (function () {
 
     $$utilities$$fetchWeeklyReportsData($$dashboard_options$$default["detailSpreadsheetData"], initDetailView);
@@ -154,6 +162,7 @@
       mainDocFrag.appendChild(drawLeftColumn());
       mainDocFrag.appendChild(drawRightColumn(data));
       document.querySelector('.Detail').appendChild(mainDocFrag);
+      $$utilities$$viewReady();
     }
 
     function drawLeftColumn() {
@@ -185,7 +194,7 @@
       var backToDashboardText = document.createElement("span");
 
       backToDashboard.className = "Detail-back";
-      backToDashboardText.className = "Detail-backText";
+      backToDashboardText.className = "Detail-backText u-label";
       backToDashboardText.innerHTML = "Back to Dashboard";
       backToDashboard.appendChild(backToDashboardText);
       colDiv.appendChild(backToDashboard);
