@@ -6,8 +6,7 @@ body {
   font-weight: 400;
   letter-spacing: 1px;
   color: #444;
-  -webkit-font-smoothing: antialiased;
-  opacity: 0; }
+  -webkit-font-smoothing: antialiased; }
   @media screen and (max-device-width: 500px) {
     body {
       text-align: center;
@@ -28,7 +27,10 @@ canvas {
 .u-container {
   max-width: 1180px;
   margin: 0 auto;
-  min-width: 960px; }
+  min-width: 960px;
+  position: relative;
+  bottom: -100px;
+  opacity: 0; }
   @media screen and (max-device-width: 999px) {
     .u-container {
       min-width: 0; } }
@@ -47,9 +49,31 @@ canvas {
 .u-padding-btm-40 {
   padding-bottom: 40px; }
 .u-ready {
+  bottom: 0;
   opacity: 1;
-  transition: opacity 0.5s linear; }
+  transition: all 0.5s linear; }
+.u-loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  border-top: 16px solid #ffd658;
+  border-right: 16px solid #ffd658;
+  border-bottom: 16px solid #fff;
+  border-left: 16px solid #fff;
+  animation: spin 1s linear infinite; }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
 .SectionBox {
   display: flex;
   flex-direction: row;

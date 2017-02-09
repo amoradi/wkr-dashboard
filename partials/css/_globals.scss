@@ -7,7 +7,6 @@ body {
   letter-spacing: 1px;
   color: $dark_gray;
   -webkit-font-smoothing: antialiased;
-  opacity: 0;
 
   @media screen and (max-device-width: $extra_small_break_point) {
     text-align: center;

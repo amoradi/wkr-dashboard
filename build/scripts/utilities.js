@@ -58,9 +58,11 @@
   function scripts$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
-    }).catch(function (error) {
-      console.log(error);
     });
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   }
+    // );
   }
 
   function scripts$utilities$$stringToObject(contentString) {
@@ -146,6 +148,10 @@
   }
 
   function scripts$utilities$$viewReady() {
-    document.querySelector("body").setAttribute("class", "u-ready");
+    var container = document.querySelector(".u-container"),
+        loader = document.querySelector(".u-loader");
+
+    loader.parentNode.removeChild(loader);
+    container.setAttribute("class", "u-container u-ready");
   }
 }).call(undefined);

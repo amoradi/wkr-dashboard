@@ -4,11 +4,11 @@ export function fetchWeeklyReportsData(endPoint, callback) {
   axios.get(endPoint)
     .then(function (response) {
       callback(response.data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    }
-  );
+    });
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   }
+  // );
 }
 
 export function stringToObject(contentString) {
@@ -96,5 +96,9 @@ export function getParameterByName(name, url) {
 }
 
 export function viewReady() {
-  document.querySelector("body").setAttribute("class", "u-ready");
+  let container = document.querySelector(".u-container"),
+  loader = document.querySelector(".u-loader");
+
+  loader.parentNode.removeChild(loader);
+  container.setAttribute("class", "u-container u-ready");
 }
