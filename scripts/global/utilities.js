@@ -4,11 +4,11 @@ export function fetchWeeklyReportsData(endPoint, callback) {
   axios.get(endPoint)
     .then(function (response) {
       callback(response.data);
-    });
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   }
-  // );
+    })
+    .catch(function (error) {
+      console.log(error);
+    }
+  );
 }
 
 export function stringToObject(contentString) {

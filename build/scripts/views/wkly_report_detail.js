@@ -62,11 +62,9 @@
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
+    }).catch(function (error) {
+      console.log(error);
     });
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   }
-    // );
   }
 
   function $$$global$utilities$$stringToObject(contentString) {
