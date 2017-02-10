@@ -1,8 +1,9 @@
 import dimensionMap from './dimension_map.js';
+import token from './dashboard_token.js';
 
 export default {
-  spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
-  detailSpreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/1/public/basic?alt=json",
+  spreadsheetData: `https:\/\/spreadsheets.google.com/feeds/list/${token}/3/public/basic?alt=json`,
+  detailSpreadsheetData: `https:\/\/spreadsheets.google.com/feeds/list/${token}/1/public/basic?alt=json`,
   docFrag: document.createDocumentFragment(),
   dashboardDimensions: [
     ["satisfactioninverse", "satisfaction"],

@@ -224,4 +224,3 @@ import {
     return parseInt(sum/dimensionCount, 10);
   }
 })();
-

@@ -26,9 +26,9 @@ document.querySelector(".TeamMemberScores-scores").addEventListener(
     if (teamMember) {
       let params = teamMember.getAttribute("data-detail"),
       name = teamMember.childNodes[1].getAttribute("data-name"),
-      image = teamMember.childNodes[0].style.backgroundImage,
+      image = teamMember.childNodes[0].style.backgroundImage.replace(/['"]+/g, ''),
       borderColor = teamMember.childNodes[0].style.borderColor;
-      
-      window.location.href = `detail.html?name=${name}&image=${image}&borderColor=${borderColor}&${params}`;
+
+      window.location.href = `detail?name=${name}&image=${image}&borderColor=${borderColor}&${params}`;
     }
 });

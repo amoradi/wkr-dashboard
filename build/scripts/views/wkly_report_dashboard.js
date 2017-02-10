@@ -11,9 +11,11 @@
     "5": "stress"
   };
 
+  var $$dashboard_token$$default = "1Fg2caxWdjvm_XaGajHNI9rs4N38maqfBx8Tp9wCZ1wQ";
+
   var $$$global$dashboard_options$$default = {
-    spreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/3/public/basic?alt=json",
-    detailSpreadsheetData: "https:\/\/spreadsheets.google.com/feeds/list/1HRQm4opZYzyF8zzJiZOFZCQKcTas5Fw6CU8twSsy-3k/1/public/basic?alt=json",
+    spreadsheetData: "https://spreadsheets.google.com/feeds/list/" + $$dashboard_token$$default + "/3/public/basic?alt=json",
+    detailSpreadsheetData: "https://spreadsheets.google.com/feeds/list/" + $$dashboard_token$$default + "/1/public/basic?alt=json",
     docFrag: document.createDocumentFragment(),
     dashboardDimensions: [["satisfactioninverse", "satisfaction"], ["workloadinverse", "workload"], ["prodinverse", "productivity"], ["clarityinverse", "clarity"], ["stressinverse", "stresslevel"]],
     dimensionMap: $$dimension_map$$default,
@@ -76,10 +78,10 @@
     if (teamMember) {
       var params = teamMember.getAttribute("data-detail"),
           name = teamMember.childNodes[1].getAttribute("data-name"),
-          image = teamMember.childNodes[0].style.backgroundImage,
+          image = teamMember.childNodes[0].style.backgroundImage.replace(/['"]+/g, ''),
           borderColor = teamMember.childNodes[0].style.borderColor;
 
-      window.location.href = "detail.html?name=" + name + "&image=" + image + "&borderColor=" + borderColor + "&" + params;
+      window.location.href = "detail?name=" + name + "&image=" + image + "&borderColor=" + borderColor + "&" + params;
     }
   });
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {
@@ -143,13 +145,9 @@
         ctx = chart.getContext('2d'),
         chartCell = document.createElement("div");
 
-    // ctx.canvas.height = ctx.canvas.width = 552;
-
     if (size) {
       ctx.canvas.height = ctx.canvas.width = size * 2;
-      console.log("the #: " + size);
     } else {
-      console.log("the $$");
       ctx.canvas.height = $$$global$dashboard_options$$default["chartOpts"]["height"] * 2;
       ctx.canvas.width = $$$global$dashboard_options$$default["chartOpts"]["width"] * 2;
     }

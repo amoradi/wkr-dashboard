@@ -11,15 +11,24 @@ head
     content=""
   )
 
+  meta(
+    name="robots"
+    content="noindex,nofollow"
+  )
+
   <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
 
-  link(
-    rel="stylesheet"
-    type="text/css"
-    href="styles/base.css"
-  )
+  if isButterInstance
+    style
+      include ../../build/styles/base.css
+  else
+    link(
+      rel="stylesheet"
+      type="text/css"
+      href="styles/base.css"
+    )
 
   link(
     href="https://fonts.googleapis.com/css?family=Open+Sans"

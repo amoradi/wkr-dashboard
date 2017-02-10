@@ -1,0 +1,13 @@
+- var isButterInstance = true
+
+doctype html
+html
+  include head.pug
+  body
+    include loader.pug
+    div(class="u-container")
+      include aggregate.pug
+      include scores.pug
+      include base_scripts.pug
+      script
+        include ../../build/scripts/views/wkly_report_dashboard-min.js

@@ -6,10 +6,9 @@ const babel = require('gulp-babel');
 const js_minify = require('gulp-minify');
 const minifyCSS = require('gulp-csso');
 const autoprefixer = require('gulp-autoprefixer');
-const transpile  = require('gulp-es6-module-transpiler');
 
-gulp.task('html', function(){
-  return gulp.src(['partials/html/dashboard.pug', 'partials/html/detail/detail.pug'])
+gulp.task('html', ['css', 'js'], function(){
+  return gulp.src(['partials/html/dashboard.pug', 'partials/html/detail/detail.pug', 'partials/html/dashboard_butter.pug', 'partials/html/detail/detail_butter.pug'])
     .pipe(pug())
     .pipe(gulp.dest('build'))
 });
@@ -35,4 +34,4 @@ gulp.task('js', function(){
     .pipe(gulp.dest('build'))
 });
 
-gulp.task('default', [ 'html', 'css', 'js' ]);
+gulp.task('default', [ 'css', 'js', 'html' ]);
