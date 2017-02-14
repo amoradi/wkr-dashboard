@@ -29,13 +29,18 @@ import {
     docFrag = document.createDocumentFragment(),
     colDiv = createDiv(),
     name = document.createElement("h1"),
-    image = document.createElement("span");
+    image = document.createElement("span"),
+    headshot = getParameterByName("image");
 
     name.className = "Detail-name";
     image.className = "Detail-image";
 
     name.innerHTML =  getParameterByName("name");
-    image.style.backgroundImage = getParameterByName("image");
+
+    if (typeof headshot !== 'undefined') {
+      image.style.backgroundImage = headshot;
+    }
+    
     image.style.borderColor = getParameterByName("borderColor");
 
     colDiv.appendChild(name);

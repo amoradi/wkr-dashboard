@@ -92,6 +92,8 @@
     height: 70px;
     display: block;
     background-size: cover;
+    background-image: url($headshot_cdn_link);
+    background-position: center center;
     margin: 10px auto;
     border-radius: 50%;
     display: table-cell;

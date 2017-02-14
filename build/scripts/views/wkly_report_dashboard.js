@@ -45,12 +45,12 @@
         }, {
           value: "#e3e448",
           condition: function condition(p) {
-            return p > 36 && p <= 50;
+            return p > 36 && p <= 65;
           }
         }, {
           value: "#61c275",
           condition: function condition(p) {
-            return p > 50;
+            return p > 65;
           }
         }]
       }
@@ -165,6 +165,7 @@
           enabled: false
         },
         animation: {
+          duration: 200,
           animateRotate: true,
           animateScale: true
         },
@@ -213,6 +214,7 @@
   }
 
   (function () {
+    var scoresDocFrag = document.createDocumentFragment();
     initDashboard($$$global$dashboard_options$$default);
 
     Number.isInteger = Number.isInteger || function (value) {
@@ -263,7 +265,12 @@
       }
 
       drawAvgScores();
+      appendScoresDocFrag();
       $$$global$utilities$$viewReady();
+    }
+
+    function appendScoresDocFrag() {
+      document.querySelector("." + $$$global$dashboard_options$$default["scoresContainerClassName"]).appendChild(scoresDocFrag);
     }
 
     function drawAvgScores() {
@@ -312,7 +319,10 @@
 
       nameNode.className = $$$global$dashboard_options$$default["chartOpts"]["cellClassName"];
       headShot.className = $$$global$dashboard_options$$default["headShotClassName"];
-      headShot.style.backgroundImage = "url(" + headShotUrl + ")";
+
+      if (typeof headShotUrl !== 'undefined') {
+        headShot.style.backgroundImage = "url(" + headShotUrl + ")";
+      }
 
       if (isReportIncomplete) {
         nameNode.setAttribute("data-incomplete-report", "true");
@@ -353,7 +363,7 @@
       affixNumberToCell(docFrag);
       row.className = $$$global$dashboard_options$$default["rowClass"];
       row.appendChild(docFrag);
-      document.querySelector("." + scoresContainerClassName).appendChild(row);
+      scoresDocFrag.appendChild(row);
     }
 
     function affixNumberToCell(docFrag) {

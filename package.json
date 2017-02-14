@@ -19,7 +19,8 @@
     "gulp-autoprefixer": "^3.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "butter-html": "gulp butter --token=1jpXSljWBfUO7KKn9tTT6hZOTWYqXGsVTJPTU1HVMShs --name=-el;gulp butter --token=1EPNBkax-XgZlMG-oAP1cE88jR4GwaG2jnZn49AqB2eE --name=-AdvantageTech;gulp butter --token=1ORXzCyXH8GO1APGVWxDfNbKOI8Z1C8WhasOCQVg0vto --name=-dr;gulp butter --token=1vJVVOyP6h3V4wxtmBKBZpCkl1dRi5IGCmSdmTI-DGx0 --name=-RamseyTech;gulp butter --token=1z01d8CP-RsSGgCopY6NEq2Ql8HdNJoGx09cyXtxZfHo --name=-DigitalMarketer;gulp butter --token=1YcihvdtK9GIZ7vjJp807Nn8rXqpO8eiAM8kgUoyPMGE --name=-woodtex;gulp butter --token=12bObSWZJWPUX5AhG7SOiomGRTLf_HYcSgh90hzVI3l8 --name=-LucasResearchGroup;gulp butter --token=1lvlxZTY1Y2_qLdKupyrr-dx5rLc9CPHkJmU7AHZmmsQ --name=-WendtGroup;gulp butter --token=1Fg2caxWdjvm_XaGajHNI9rs4N38maqfBx8Tp9wCZ1wQ --name=-FullCycleMarketing;"
   },
   "repository": {
     "type": "git",

@@ -41,13 +41,13 @@ export default {
         {
           value: "#e3e448",
           condition: function(p) {
-            return p > 36 && p <= 50;
+            return p > 36 && p <= 65;
           }
         },
         {
           value: "#61c275",
           condition: function(p) {
-            return p > 50;
+            return p > 65;
           }
         }
       ]

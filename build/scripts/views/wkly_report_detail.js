@@ -45,12 +45,12 @@
         }, {
           value: "#e3e448",
           condition: function condition(p) {
-            return p > 36 && p <= 50;
+            return p > 36 && p <= 65;
           }
         }, {
           value: "#61c275",
           condition: function condition(p) {
-            return p > 50;
+            return p > 65;
           }
         }]
       }
@@ -144,6 +144,7 @@
           enabled: false
         },
         animation: {
+          duration: 200,
           animateRotate: true,
           animateScale: true
         },
@@ -208,13 +209,18 @@
           docFrag = document.createDocumentFragment(),
           colDiv = createDiv(),
           name = document.createElement("h1"),
-          image = document.createElement("span");
+          image = document.createElement("span"),
+          headshot = $$$global$utilities$$getParameterByName("image");
 
       name.className = "Detail-name";
       image.className = "Detail-image";
 
       name.innerHTML = $$$global$utilities$$getParameterByName("name");
-      image.style.backgroundImage = $$$global$utilities$$getParameterByName("image");
+
+      if (typeof headshot !== 'undefined') {
+        image.style.backgroundImage = headshot;
+      }
+
       image.style.borderColor = $$$global$utilities$$getParameterByName("borderColor");
 
       colDiv.appendChild(name);

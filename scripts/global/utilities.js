@@ -84,6 +84,7 @@ export function doughnutChartFactory(chartData, colors, size) {
         enabled: false
       },
       animation: {
+        duration: 200,
         animateRotate: true,
         animateScale: true
       },

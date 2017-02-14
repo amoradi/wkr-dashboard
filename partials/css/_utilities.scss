@@ -4,7 +4,8 @@
     margin: 0 auto;
     min-width: 960px;
     position: relative;
-    bottom: -50px;
+    transform: translateY(40px);
+    backface-visibility: hidden;
     opacity: 0;
 
     @media screen and (max-device-width: $small_break_point_1) {
@@ -37,9 +38,9 @@
   }
 
   &-ready {
-    bottom: 0;
+    transform: translateY(0);
     opacity: 1;
-    transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out 0s;
   }
 
   &-loader {
@@ -53,12 +54,10 @@
     border-radius: 50%;
     width: 120px;
     height: 120px;
-
-    border-top: 16px solid $yellow;
-    border-right: 16px solid $yellow;
-    border-bottom: 16px solid $white;
-    border-left: 16px solid $white;
-
+    border-top: 2px solid $yellow;
+    border-right: 2px solid $yellow;
+    border-bottom: 2px solid $white;
+    border-left: 2px solid $white;
     animation: spin 0.75s linear infinite;
   }
 }

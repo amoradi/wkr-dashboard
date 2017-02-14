@@ -13,6 +13,7 @@ import {
 } from '../global/utilities.js';
 
 (function() {
+  const scoresDocFrag = document.createDocumentFragment();
   initDashboard(dashboardOpts);
 
   Number.isInteger = Number.isInteger || function(value) {
@@ -30,7 +31,7 @@ import {
       "productivity": [],
       "clarity": [],
       "stress": []
-    }
+    };
 
     fetchWeeklyReportsData(options["spreadsheetData"], parseTeamMemberScores);
   }
@@ -68,7 +69,12 @@ import {
     }
 
     drawAvgScores();
+    appendScoresDocFrag();
     viewReady(); 
+  }
+
+  function appendScoresDocFrag() {
+    document.querySelector(`.${dashboardOpts["scoresContainerClassName"]}`).appendChild(scoresDocFrag);
   }
 
   function drawAvgScores() {
@@ -120,7 +126,10 @@ import {
     
     nameNode.className = dashboardOpts["chartOpts"]["cellClassName"];
     headShot.className = dashboardOpts["headShotClassName"];
-    headShot.style.backgroundImage = `url(${headShotUrl})`;
+
+    if (typeof headShotUrl !== 'undefined') {
+      headShot.style.backgroundImage = `url(${headShotUrl})`;
+    }
 
     if (isReportIncomplete) {
       nameNode.setAttribute("data-incomplete-report", "true");
@@ -173,7 +182,7 @@ import {
     affixNumberToCell(docFrag);
     row.className = dashboardOpts["rowClass"]; 
     row.appendChild(docFrag);
-    document.querySelector(`.${scoresContainerClassName}`).appendChild(row);
+    scoresDocFrag.appendChild(row);
   }
 
   function affixNumberToCell(docFrag) {
