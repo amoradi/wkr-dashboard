@@ -13,6 +13,17 @@
     }
   }
 
+  &-sticky-container {
+    display: none;
+    z-index: 999;
+    position: fixed;
+    width: 100%;
+    padding: 0 5%;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+  }
+
   &-section {
     background-color: $white;
     border: 1px solid darken($gray, 30%);
@@ -41,6 +52,10 @@
     transform: translateY(0);
     opacity: 1;
     transition: all 0.2s ease-out 0s;
+  }
+
+  &-show {
+    display: block;
   }
 
   &-loader {

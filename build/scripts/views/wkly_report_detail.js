@@ -11,7 +11,7 @@
     "5": "stress"
   };
 
-  var $$dashboard_token$$default = "1Fg2caxWdjvm_XaGajHNI9rs4N38maqfBx8Tp9wCZ1wQ";
+  var $$dashboard_token$$default = "1jpXSljWBfUO7KKn9tTT6hZOTWYqXGsVTJPTU1HVMShs";
 
   var $$$global$dashboard_options$$default = {
     spreadsheetData: "https://spreadsheets.google.com/feeds/list/" + $$dashboard_token$$default + "/3/public/basic?alt=json",

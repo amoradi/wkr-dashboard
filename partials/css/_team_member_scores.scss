@@ -53,6 +53,21 @@
     }
   }
 
+  &-stickyDimensions {
+    background-color: $white;
+    padding: 20px 20px 0;
+    box-sizing: border-box;
+    max-width: 1180px;
+    margin: 0 auto;
+    min-width: 960px;
+    border-left: 1px solid darken($gray, 30%);
+    border-right: 1px solid darken($gray, 30%);
+
+    @media screen and (max-device-width: $small_break_point_1) {
+      min-width: 0;
+    }
+  }
+
   &-cell {
     flex-basis: 15%;
     text-align: center;

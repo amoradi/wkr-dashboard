@@ -11,7 +11,7 @@
     "5": "stress"
   };
 
-  var $$dashboard_token$$default = "1Fg2caxWdjvm_XaGajHNI9rs4N38maqfBx8Tp9wCZ1wQ";
+  var $$dashboard_token$$default = "1jpXSljWBfUO7KKn9tTT6hZOTWYqXGsVTJPTU1HVMShs";
 
   var $$$global$dashboard_options$$default = {
     spreadsheetData: "https://spreadsheets.google.com/feeds/list/" + $$dashboard_token$$default + "/3/public/basic?alt=json",
@@ -82,6 +82,26 @@
           borderColor = teamMember.childNodes[0].style.borderColor;
 
       window.location.href = "detail?name=" + name + "&image=" + image + "&borderColor=" + borderColor + "&" + params;
+    }
+  });
+
+  var $$$event_handlers$dashboard_event_handlers$$bodyRect = document.body.getBoundingClientRect(),
+      $$$event_handlers$dashboard_event_handlers$$dimenions = document.querySelector(".TeamMemberScores-dimensions"),
+      $$$event_handlers$dashboard_event_handlers$$elemRect = $$$event_handlers$dashboard_event_handlers$$dimenions.getBoundingClientRect(),
+      $$$event_handlers$dashboard_event_handlers$$stickyHeight = 59,
+      $$$event_handlers$dashboard_event_handlers$$dimensionsOffset = $$$event_handlers$dashboard_event_handlers$$elemRect.bottom + $$$event_handlers$dashboard_event_handlers$$stickyHeight - $$$event_handlers$dashboard_event_handlers$$bodyRect.top,
+      $$$event_handlers$dashboard_event_handlers$$stickyDimensionsClass = "StickyDimensions u-sticky-container",
+      $$$event_handlers$dashboard_event_handlers$$stickDimensions = document.querySelector(".StickyDimensions.u-sticky-container");
+
+  window.addEventListener("resize", function (e) {
+    $$$event_handlers$dashboard_event_handlers$$dimensionsOffset = $$$event_handlers$dashboard_event_handlers$$elemRect.bottom + $$$event_handlers$dashboard_event_handlers$$stickyHeight - $$$event_handlers$dashboard_event_handlers$$bodyRect.top;
+  });
+
+  window.addEventListener("scroll", function (e) {
+    if (document.body.scrollTop >= $$$event_handlers$dashboard_event_handlers$$dimensionsOffset) {
+      $$$event_handlers$dashboard_event_handlers$$stickDimensions.setAttribute("class", $$$event_handlers$dashboard_event_handlers$$stickyDimensionsClass + " u-show");
+    } else {
+      $$$event_handlers$dashboard_event_handlers$$stickDimensions.setAttribute("class", $$$event_handlers$dashboard_event_handlers$$stickyDimensionsClass);
     }
   });
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {

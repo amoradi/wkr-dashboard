@@ -1,0 +1,5 @@
+.StickyDimensions {
+  @media screen and (max-device-width: $small_break_point_1) {
+    display: none;
+  }
+}

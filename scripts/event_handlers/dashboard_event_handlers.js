@@ -32,3 +32,23 @@ document.querySelector(".TeamMemberScores-scores").addEventListener(
       window.location.href = `detail?name=${name}&image=${image}&borderColor=${borderColor}&${params}`;
     }
 });
+
+var bodyRect = document.body.getBoundingClientRect(),
+  dimenions = document.querySelector(".TeamMemberScores-dimensions"),
+  elemRect = dimenions.getBoundingClientRect(),
+  stickyHeight = 59,
+  dimensionsOffset = elemRect.bottom + stickyHeight - bodyRect.top,
+  stickyDimensionsClass = "StickyDimensions u-sticky-container",
+  stickDimensions = document.querySelector(".StickyDimensions.u-sticky-container");
+
+window.addEventListener("resize", function(e) {
+  dimensionsOffset = elemRect.bottom + stickyHeight - bodyRect.top;
+});
+
+window.addEventListener("scroll", function(e){
+  if (document.body.scrollTop >= dimensionsOffset) {
+    stickDimensions.setAttribute("class", `${stickyDimensionsClass} u-show`);
+  } else {
+    stickDimensions.setAttribute("class", stickyDimensionsClass);
+  }
+});
