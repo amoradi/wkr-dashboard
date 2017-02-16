@@ -7,6 +7,27 @@
     @media screen and (max-device-width: $extra_small_break_point) {
       padding-left: 0;
     }
+
+    &Block {
+      flex-direction: column;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      @media screen and (min-device-width: $small_break_point) {
+        flex-direction: row;
+      }
+    }
+  }
+
+  &-link {
+    color: $dark_gray;
+    text-decoration: none;
+    cursor: pointer;
+
+    @media screen and (min-device-width: $small_break_point) {
+      padding-right: $container_padding;
+    }
   }
 
   &-completedPercent {
