@@ -101,19 +101,30 @@ import {
     docFrag = document.createDocumentFragment(),
     highLabel = document.createElement("span"),
     lowLabel = document.createElement("span"),
+    anythingElseLabel = document.createElement("span"),
+    anythingElse = document.createElement("p"),
     high = document.createElement("p"),
-    low = document.createElement("p");
+    low = document.createElement("p"),
+    anythingElseContent = teamMemberContent["isthereanythingthatasyourleadericouldbedoingbetteroryouwantmetoknow"];
 
-    highLabel.className = lowLabel.className = "u-label";
+    anythingElseLabel.className = highLabel.className = lowLabel.className = "u-label";
+    anythingElseLabel.innerHTML = "ANYTHING ELSE YOU WANT TO TELL YOUR LEADER";
     highLabel.innerHTML = "HIGH";
     lowLabel.innerHTML = "LOW";
-    high.className = "u-padding-btm-40";
+    anythingElse.className = high.className = low.className = "u-padding-btm-40";
+    anythingElse.innerHTML = anythingElseContent;
     high.innerHTML = teamMemberContent["high"];
     low.innerHTML = teamMemberContent["low"];
+
     docFrag.appendChild(highLabel);
     docFrag.appendChild(high);
     docFrag.appendChild(lowLabel);
     docFrag.appendChild(low);
+
+    if (typeof anythingElseContent !== 'undefined') {
+      docFrag.appendChild(anythingElseLabel);
+      docFrag.appendChild(anythingElse);
+    }
 
     return docFrag;
   }
