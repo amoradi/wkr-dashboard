@@ -5,7 +5,7 @@ import {
   calculateColor,
   doughnutChartFactory,
   getParameterByName,
-  stringToObject,
+  detailStringToObject,
   viewReady
 } from '../global/utilities.js';
 
@@ -97,7 +97,7 @@ import {
   function drawRightColumnHighsLows(data) {
     let teamMembers = data["feed"]["entry"],
     teamMember = teamMembers.find(checkName),
-    teamMemberContent = stringToObject(teamMember["content"]["$t"]),
+    teamMemberContent = detailStringToObject(teamMember["content"]["$t"]),
     docFrag = document.createDocumentFragment(),
     highLabel = document.createElement("span"),
     lowLabel = document.createElement("span"),

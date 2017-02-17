@@ -14,7 +14,7 @@ const es = require('event-stream');
 const argv = require('yargs').argv;
 const entreToken = "1jpXSljWBfUO7KKn9tTT6hZOTWYqXGsVTJPTU1HVMShs";
 
-// name must be 'parameterized'
+// [name] must be 'parameterized', no spaces allowed
 const spreadsheetTokens = [
   {
     name: "el",
@@ -87,7 +87,7 @@ gulp.task('setToken', () => {
 });
 
 gulp.task('html', ['css', 'js'], () => {
-  return gulp.src(['partials/html/dashboard.pug', 'partials/html/detail/detail.pug'])
+  return gulp.src(['partials/html/dashboard.pug', 'partials/html/detail/detail.pug', 'partials/html/highs_lows/highs_lows.pug'])
     .pipe(pug())
     .pipe(rename((path) => {
       if (typeof argv.name !== "undefined") {
@@ -98,7 +98,7 @@ gulp.task('html', ['css', 'js'], () => {
 });
 
 gulp.task('butter-html', ['css', 'js'], () => {
-  return gulp.src(['partials/html/dashboard_butter.pug', 'partials/html/detail/detail_butter.pug'])
+  return gulp.src(['partials/html/dashboard_butter.pug', 'partials/html/detail/detail_butter.pug', 'partials/html/highs_lows/highs_lows_butter.pug'])
     .pipe(pug())
     .pipe(rename((path) => {
       if (typeof argv.name !== "undefined") {
@@ -120,7 +120,7 @@ gulp.task('css', () => {
 });
 
 gulp.task('js', ['setToken'], () => {
-  return gulp.src(['scripts/views/wkly_report_dashboard.js', 'scripts/views/wkly_report_detail.js'])
+  return gulp.src(['scripts/views/wkly_report_dashboard.js', 'scripts/views/wkly_report_detail.js', 'scripts/views/wkly_report_highs_lows.js'])
     .pipe(transpile({
       formatter: 'bundle'
     }))

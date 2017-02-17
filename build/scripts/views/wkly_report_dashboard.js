@@ -11,7 +11,7 @@
     "5": "stress"
   };
 
-  var $$dashboard_token$$default = "1jpXSljWBfUO7KKn9tTT6hZOTWYqXGsVTJPTU1HVMShs";
+  var $$dashboard_token$$default = "1Fg2caxWdjvm_XaGajHNI9rs4N38maqfBx8Tp9wCZ1wQ";
 
   var $$$global$dashboard_options$$default = {
     spreadsheetData: "https://spreadsheets.google.com/feeds/list/" + $$dashboard_token$$default + "/3/public/basic?alt=json",
@@ -140,6 +140,35 @@
     ary.forEach(function (item) {
       item = item.split(': ');
       tempObj[item[0].trim()] = item[1];
+    });
+
+    return tempObj;
+  }
+
+  function $$$global$utilities$$detailStringToObject(contentString) {
+    var tempObj = {},
+        keyOrder = [{
+      start: "name:",
+      end: ", emailaddress:"
+    }, {
+      start: "high:",
+      end: ", low:"
+    }, {
+      start: "low:",
+      end: ", jobsatisfaction:"
+    }, {
+      start: "isthereanythingthatasyourleadericouldbedoingbetteroryouwantmetoknow:",
+      end: ", daterange:"
+    }];
+
+    keyOrder.forEach(function (dimension, i) {
+      var keyStart = contentString.indexOf(dimension.start);
+      var keyLength = dimension.start.length;
+      var valueStart = keyStart + keyLength;
+      var valueEnd = contentString.indexOf(dimension.end);
+      var key = contentString.substr(keyStart, keyLength - 1);
+
+      tempObj[key] = contentString.substring(valueStart + 1, valueEnd);
     });
 
     return tempObj;

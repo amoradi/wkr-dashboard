@@ -42,6 +42,40 @@ export function stringToObject(contentString) {
   return tempObj;
 }
 
+export function detailStringToObject(contentString) {
+  let tempObj = {},
+  keyOrder = [
+    {
+      start: "name:",
+      end: ", emailaddress:"
+    },
+    {
+      start: "high:",
+      end: ", low:"
+    },
+    {
+      start: "low:",
+      end: ", jobsatisfaction:"
+    },
+    {
+      start:"isthereanythingthatasyourleadericouldbedoingbetteroryouwantmetoknow:",
+      end: ", daterange:"
+    }
+  ];
+
+  keyOrder.forEach(function(dimension, i) {
+    let keyStart = contentString.indexOf(dimension.start);
+    let keyLength = dimension.start.length;
+    let valueStart = keyStart + keyLength;
+    let valueEnd = contentString.indexOf(dimension.end);
+    let key = contentString.substr(keyStart, keyLength-1);
+
+    tempObj[key] = contentString.substring(valueStart+1, valueEnd);
+  });
+
+  return tempObj;
+}
+
 export function calculateColor(dimensionSet) {
   let colorAry = [dashboardOpts["chartOpts"]["colors"]["inverseColor"]];
 

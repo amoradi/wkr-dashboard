@@ -57,12 +57,6 @@
     }
   };
 
-  var $$$event_handlers$detail_event_handlers$$default = document.querySelector("body").addEventListener("click", function (e) {
-    if (e.target.className === "Detail-backText u-label") {
-      window.location.href = "dashboard";
-    }
-  });
-
   function $$$global$utilities$$fetchWeeklyReportsData(endPoint, callback) {
     axios.get(endPoint).then(function (response) {
       callback(response.data);
@@ -222,142 +216,80 @@
   }
 
   (function () {
+    var highsLowsDocFrag = document.createDocumentFragment();
+    var teamMemberData;
 
-    $$$global$utilities$$fetchWeeklyReportsData($$$global$dashboard_options$$default["detailSpreadsheetData"], initDetailView);
+    $$$global$utilities$$fetchWeeklyReportsData($$$global$dashboard_options$$default["spreadsheetData"], fetchHighLowData);
 
-    function initDetailView(data) {
-      var mainDocFrag = document.createDocumentFragment();
-      mainDocFrag.appendChild(drawLeftColumn());
-      mainDocFrag.appendChild(drawRightColumn(data));
-      document.querySelector('.Detail').appendChild(mainDocFrag);
-      $$$global$utilities$$viewReady();
+    function fetchHighLowData(dimensionData) {
+      teamMemberData = dimensionData;
+
+      $$$global$utilities$$fetchWeeklyReportsData($$$global$dashboard_options$$default["detailSpreadsheetData"], initHighsLowsView);
     }
 
-    function drawLeftColumn() {
-      var leftColumn = document.createDocumentFragment(),
-          docFrag = document.createDocumentFragment(),
-          colDiv = createDiv(),
-          name = document.createElement("h1"),
-          image = document.createElement("span"),
-          headshot = $$$global$utilities$$getParameterByName("image");
-
-      name.className = "Detail-name";
-      image.className = "Detail-image";
-
-      name.innerHTML = $$$global$utilities$$getParameterByName("name");
-
-      if (typeof headshot !== 'undefined') {
-        image.style.backgroundImage = headshot;
-      }
-
-      image.style.borderColor = $$$global$utilities$$getParameterByName("borderColor");
-
-      colDiv.appendChild(name);
-      colDiv.appendChild(image);
-      docFrag.appendChild(colDiv);
-      leftColumn.appendChild(docFrag);
-
-      return leftColumn;
-    }
-
-    function drawRightColumn(data) {
-      var rightColumn = document.createDocumentFragment(),
-          colDiv = createDiv(),
-          backToDashboard = document.createElement("div"),
-          backToDashboardText = document.createElement("span");
-
-      backToDashboard.className = "Detail-back";
-      backToDashboardText.className = "Detail-backText u-label";
-      backToDashboardText.innerHTML = "Back to Dashboard";
-      backToDashboard.appendChild(backToDashboardText);
-      colDiv.appendChild(backToDashboard);
-      colDiv.appendChild(drawRightColumnHeader());
-      colDiv.appendChild(drawRightColumnHighsLows(data));
-      rightColumn.appendChild(colDiv);
-
-      return rightColumn;
-    }
-
-    function drawRightColumnHeader() {
-      var rightColHeader = document.createDocumentFragment(),
-          header = document.createElement("header"),
-          dimensions = ["satisfaction", "workload", "productivity", "clarity", "stress"];
-      header.className = "ScoreBox";
-
-      dimensions.forEach(function (dimension) {
-        header.appendChild(createNestedElems("div", "ScoreBox-dimension " + dimension, "span", "u-label", "" + dimension));
+    function initHighsLowsView(weeklyReportsData) {
+      weeklyReportsData["feed"]["entry"].forEach(function (teamMember) {
+        drawMemberRows(teamMember);
       });
 
-      rightColHeader.appendChild(header);
-
-      return rightColHeader;
+      appendHighsLowsDocFrag();
+      $$$global$utilities$$viewReady();
+      console.log(teamMemberData);
     }
 
-    function drawRightColumnHighsLows(data) {
-      var teamMembers = data["feed"]["entry"],
-          teamMember = teamMembers.find(checkName),
-          teamMemberContent = $$$global$utilities$$detailStringToObject(teamMember["content"]["$t"]),
-          docFrag = document.createDocumentFragment(),
-          highLabel = document.createElement("span"),
-          lowLabel = document.createElement("span"),
-          anythingElseLabel = document.createElement("span"),
-          anythingElse = document.createElement("p"),
-          high = document.createElement("p"),
-          low = document.createElement("p"),
-          anythingElseContent = teamMemberContent["isthereanythingthatasyourleadericouldbedoingbetteroryouwantmetoknow"];
+    function appendHighsLowsDocFrag() {
+      document.querySelector("." + $$$global$dashboard_options$$default["scoresContainerClassName"]).appendChild(highsLowsDocFrag);
+    }
 
-      anythingElseLabel.className = highLabel.className = lowLabel.className = "u-label";
-      anythingElseLabel.innerHTML = "ANYTHING ELSE YOU WANT TO TELL YOUR LEADER";
-      highLabel.innerHTML = "HIGH";
-      lowLabel.innerHTML = "LOW";
-      anythingElse.className = high.className = low.className = "u-padding-btm-40";
-      anythingElse.innerHTML = anythingElseContent;
-      high.innerHTML = teamMemberContent["high"];
-      low.innerHTML = teamMemberContent["low"];
+    function drawMemberRows(teamMember) {
+      var row = document.createElement("div");
+      var contentStr = teamMember["content"]["$t"],
+          contentObj = $$$global$utilities$$detailStringToObject(contentStr),
+          name = contentObj["name"],
+          headshot = contentObj["headshot"],
+          high = contentObj["high"],
+          low = contentObj["low"];
 
-      docFrag.appendChild(highLabel);
-      docFrag.appendChild(high);
-      docFrag.appendChild(lowLabel);
-      docFrag.appendChild(low);
+      row.className = $$$global$dashboard_options$$default["rowClass"];
+      row.appendChild(drawTeamMember(name, headshot));
+      row.appendChild(drawTeamMemberHighsLows([high, low]));
+      highsLowsDocFrag.appendChild(row);
+    }
 
-      if (typeof anythingElseContent !== 'undefined') {
-        docFrag.appendChild(anythingElseLabel);
-        docFrag.appendChild(anythingElse);
+    function drawTeamMember(nameString, headShotUrl) {
+
+      var nameNode = document.createElement("div"),
+          headShot = document.createElement("span"),
+          name = document.createElement("span");
+
+      nameNode.className = $$$global$dashboard_options$$default["chartOpts"]["cellClassName"];
+      headShot.className = $$$global$dashboard_options$$default["headShotClassName"];
+
+      if (typeof headShotUrl !== 'undefined') {
+        headShot.style.backgroundImage = "url(" + headShotUrl + ")";
       }
 
+      name.className = $$$global$dashboard_options$$default["nameClassName"];
+      name.innerHTML = nameString;
+      name.setAttribute("data-name", nameString);
+      nameNode.appendChild(headShot);
+      nameNode.appendChild(name);
+
+      return nameNode;
+    }
+
+    function drawTeamMemberHighsLows(highLow) {
+      var docFrag = document.createDocumentFragment();
+
+      highLow.forEach(function (value) {
+        var span = document.createElement('span');
+        span.className = "TeamMemberScores-cell";
+        span.innerHTML = value;
+
+        docFrag.appendChild(span);
+      });
+
       return docFrag;
-    }
-
-    function checkName(teamMember) {
-      var tmName = "name: " + $$$global$utilities$$getParameterByName("name"),
-          index = teamMember["content"]["$t"].indexOf(tmName);
-
-      return index === 0 ? true : false;
-    }
-
-    function createNestedElems(prntElem, prntClass, chElem, chClass, chText) {
-      var parent = document.createElement(prntElem);
-      parent.className = prntClass;
-
-      var child = document.createElement(chElem);
-      child.className = chClass;
-      child.innerHTML = chText;
-
-      var dimensionVal = $$$global$utilities$$getParameterByName(chText),
-          dimensionSet = [100 - dimensionVal, dimensionVal],
-          chart = $$$global$utilities$$doughnutChartFactory(dimensionSet, $$$global$utilities$$calculateColor(dimensionSet), $$$global$dashboard_options$$default["chartOpts"]["largeHeightWidth"]);
-
-      parent.appendChild(child);
-      parent.appendChild(chart);
-
-      return parent;
-    }
-
-    function createDiv() {
-      var colDiv = document.createElement("div");
-      colDiv.className = "Detail-column";
-
-      return colDiv;
     }
   })();
 }).call(undefined);
